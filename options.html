@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script type="module" src="browser-polyfill.js"></script>
+  </head>
+  <body>
+    <form id="settings">
+        <fieldset>
+            <legend>Danbooru URL:</legend>
+            <input type="url" id="url" size="50" />
+            <p>Leave field empty if unsure.</p>
+        </fieldset>
+        <fieldset>
+            <legend>Open upload page in:</legend>
+            <label><input type="radio" name="openIn" id="new" value="new" checked>New Tab</label><br/>
+            <label><input type="radio" name="openIn" id="background" value="background">New Background Tab</label><br/>
+            <label><input type="radio" name="openIn" id="current" value="current">Current Tab</label>
+        </fieldset>
+        <button type="submit">Save</button>
+    </form>
+    <script src="options.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "name": "Upload to Danbooru",
+    "description": "Add a context menu option for images to upload to Danbooru.",
+    "version": "1.0.0",
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
+    },
+    "background": {
+        "scripts": [
+            "browser-polyfill.js",
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "storage"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "upload-to-danbooru@zipfiled.info",
+            "strict_min_version": "57.0"
+        }
+    }
+}
