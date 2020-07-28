@@ -13,7 +13,7 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
 
     const settings = await browser.storage.sync.get(['url', 'openIn']);
     const danbooruUrl = settings.url || DefaultDanbooruURL;
-    const batch = info.modifiers.some((key) => key === "Ctrl");
+    const batch = (info.modifiers || []).some((key) => key === "Ctrl");
     let url, active = true;
 
     if (batch) {
@@ -30,6 +30,7 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
     switch (settings.openIn) {
     case "current":
         await browser.tabs.update(tab.id, {url: url.href});
+        break;
     case "background":
         active = false
     default:

@@ -1,3 +1,4 @@
 node_modules/
 web-ext-artifacts/
 browser-polyfill.js
+*.pem
