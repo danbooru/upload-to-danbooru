@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a context menu option for images to upload to Danbooru.",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "icons": {
         "16": "danbooru.svg"
     },
