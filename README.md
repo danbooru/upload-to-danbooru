@@ -15,8 +15,8 @@ web-ext build -n upload_to_danbooru.zip -i README.md
 
 ```sh
 npm install --global crx3
-test -f key.pem || openssl genrsa -out key.pem 4096
-crx3 -p key.pem -o web-ext-artifacts/upload_to_danbooru.crx < web-ext-artifacts/upload_to_danbooru.zip
+test -f .key.pem || openssl genrsa -out .key.pem 4096
+crx3 -p .key.pem -o web-ext-artifacts/upload_to_danbooru.crx < web-ext-artifacts/upload_to_danbooru.zip
 ```
 
 ## Install
