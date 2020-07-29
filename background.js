@@ -6,6 +6,20 @@ browser.contextMenus.create({
     contexts: ["image"],
 });
 
+async function getReferrer(tabId) {
+    const code = "document.referrer";
+
+    try {
+        const results = await browser.tabs.executeScript(tabId, {code});
+
+        return results.find(Boolean) || "";
+    } catch (err) {
+        console.error("failed to get referrer", err);
+    }
+
+    return "";
+}
+
 browser.contextMenus.onClicked.addListener(async function(info, tab) {
     if (info.menuItemId !== "upload-to-danbooru") {
         return;
@@ -14,7 +28,7 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
     const settings = await browser.storage.sync.get(["url", "openIn"]);
     const danbooruUrl = settings.url || DefaultDanbooruURL;
     const batch = (info.modifiers || []).some((key) => key === "Ctrl");
-    let url, active = true;
+    let url, ref, active = true;
 
     if (batch) {
         url = new URL("uploads/batch", danbooruUrl);
@@ -23,8 +37,18 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
     } else {
         url = new URL("uploads/new", danbooruUrl);
 
+        if (info.srcUrl === info.pageUrl) {
+            if (info.frameUrl) {
+                ref = info.frameUrl;
+            } else {
+                ref = await getReferrer(tab.id);
+            }
+        } else {
+            ref = info.pageUrl;
+        }
+
         url.searchParams.set("url", info.srcUrl);
-        url.searchParams.set("ref", info.pageUrl);
+        url.searchParams.set("ref", ref);
     }
 
     switch (settings.openIn) {
