@@ -2,7 +2,7 @@ const DefaultDanbooruURL = "https://danbooru.donmai.us/";
 
 browser.contextMenus.create({
     id: "upload-to-danbooru",
-    title: "Upload to Danbooru",
+    title: "Upload to &Danbooru",
     contexts: ["image"],
 });
 
