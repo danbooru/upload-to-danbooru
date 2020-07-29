@@ -11,7 +11,7 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
         return;
     }
 
-    const settings = await browser.storage.sync.get(['url', 'openIn']);
+    const settings = await browser.storage.sync.get(["url", "openIn"]);
     const danbooruUrl = settings.url || DefaultDanbooruURL;
     const batch = (info.modifiers || []).some((key) => key === "Ctrl");
     let url, active = true;
@@ -32,12 +32,12 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
         await browser.tabs.update(tab.id, {url: url.href});
         break;
     case "background":
-        active = false
+        active = false;
     default:
         await browser.tabs.create({
             active: active,
             openerTabId: tab.id,
             url: url.href,
-        })
+        });
     }
 });

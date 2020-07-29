@@ -11,7 +11,7 @@ async function saveOptions(e) {
 
 async function restoreOptions() {
     const form = document.forms.settings;
-    const settings = await browser.storage.sync.get(['url', 'openIn']);
+    const settings = await browser.storage.sync.get(["url", "openIn"]);
 
     form.url.value = settings.url || "";
     form.openIn.value = settings.openIn || "new";
