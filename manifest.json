@@ -26,6 +26,7 @@
         "contextMenus",
         "storage"
     ],
+    "minimum_chrome_version": " 55",
     "browser_specific_settings": {
         "gecko": {
             "id": "upload-to-danbooru@zipfiled.info",
