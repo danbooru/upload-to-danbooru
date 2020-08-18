@@ -1,0 +1,42 @@
+{
+  "name": "upload-to-danbooru",
+  "version": "1.2.0",
+  "description": "Add a context menu option for images to upload to Danbooru.",
+  "type": "module",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "build": "./build.sh"
+  },
+  "exports": {
+    "./": "./src/"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "mocha": "^8.1.1",
+    "should": "^13.2.3",
+    "web-ext": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZipFile/upload-to-danbooru.git"
+  },
+  "keywords": [
+    "danbooru",
+    "webextension"
+  ],
+  "author": "ZipFile",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/ZipFile/upload-to-danbooru/issues"
+  },
+  "webExt": {
+    "sourceDir": "dist"
+  },
+  "homepage": "https://github.com/ZipFile/upload-to-danbooru#readme"
+}

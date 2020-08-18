@@ -1,31 +1,48 @@
 # Upload to Danbooru Web Extension
 
-Add a context menu option for images to upload to Danbooru.
+Add a page action and a context menu option (for images) to upload to ![cardboard box](/danbooru.svg) Danbooru. Replacement for [bookmarklets](https://danbooru.donmai.us/static/bookmarklet).
+
+## Usage
+
+![Page action demo](/screenshots/page-action.png)
+
+![Context menu demo](/screenshots/context-menu.png)
 
 ## Build
 
 ```sh
-npm install --global web-ext
-npm install webextension-polyfill
-cp node_modules/webextension-polyfill/dist/browser-polyfill.js .
-web-ext build -n upload_to_danbooru.zip -i README.md
+npm i
+npm run build
 ```
+
+Extension package will be located in `web-ext-artifacts/` folder.
+
+## Run Tests
+
+```sh
+npm test
+```
+
+## Install In Developer Mode
+
+Make sure you have built extension.
+
+### Firefox
+
+* Open `about:debugging`
+* Click `Load Temporary Add-on`
+* Select `dist/manifest.json` file
 
 ### Chrome
 
+* Open Chrome Settings
+* Select Extensions
+* Enable developer mode
+* Click Load Unpacked
+* Select `dist/` folder
+
+### web-ext
+
 ```sh
-npm install --global crx3
-test -f .key.pem || openssl genrsa -out .key.pem 4096
-crx3 -p .key.pem -o web-ext-artifacts/upload_to_danbooru.crx < web-ext-artifacts/upload_to_danbooru.zip
+npx web-ext run
 ```
-
-## Install
-
-```sh
-firefox web-ext-artifacts/upload_to_danbooru.zip
-```
-
-### Chrome
-
-Open `chrome://extensions`, enable `Developer mode`, then drop
-`web-ext-artifacts/upload_to_danbooru.crx` onto the page.

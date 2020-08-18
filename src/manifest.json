@@ -1,0 +1,69 @@
+{
+    "manifest_version": 2,
+    "name": "Upload to Danbooru",
+    "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
+    "version": "1.2.0",
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "96": "icons/icon96.png",
+        "128": "icons/icon128.png",
+        "256": "icons/icon256.png"
+    },
+    "page_action": {
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "19": "icons/icon19.png",
+            "32": "icons/icon32.png",
+            "38": "icons/icon38.png"
+        },
+        "default_title": "Upload to Danbooru",
+        "show_matches": [
+            "https://twitter.com/*/status/*",
+
+            "https://www.pixiv.net/artworks/*",
+            "https://www.pixiv.net/en/artworks/*",
+
+            "https://seiga.nicovideo.jp/seiga/im*",
+            "https://seiga.nicovideo.jp/watch/mg*",
+
+            "https://*.deviantart.com/art/*",
+            "https://www.deviantart.com/*/art/*",
+            "https://sta.sh/*",
+
+            "https://nijie.info/view.php?*id=*",
+            "https://nijie.info/view_popup.php?*id=*",
+
+            "https://pawoo.net/@*/*",
+
+            "https://m.weibo.cn/detail/*",
+            "https://m.weibo.cn/status/*",
+
+            "https://www.hentai-foundry.com/pictures/user/*",
+
+            "https://www.newgrounds.com/art/view/*",
+
+            "https://*.tumblr.com/post/*"
+        ]
+    },
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
+    },
+    "background": {
+        "page": "background.html"
+    },
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "storage"
+    ],
+    "minimum_chrome_version": "55",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "upload-to-danbooru@zipfiled.info",
+            "strict_min_version": "59.0"
+        }
+    }
+}
