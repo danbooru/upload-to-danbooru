@@ -16,10 +16,7 @@
         "browser_style": true
     },
     "background": {
-        "scripts": [
-            "browser-polyfill.js",
-            "background.js"
-        ]
+        "page": "background.html"
     },
     "permissions": [
         "activeTab",
