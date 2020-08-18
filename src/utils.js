@@ -165,3 +165,7 @@ export async function makeUrl(prefix, batch, info, getReferrer) {
 
     return makePostUrl(prefix, info.srcUrl, ref);
 }
+
+export function getPageActionMatchRegExp(globs) {
+    return new RegExp(globs.map((glob) => "^" + glob.replace(/\./g, "\\.").replace(/\*/g, ".*")).join("|"));
+}

@@ -35,6 +35,7 @@ Make sure you have built extension.
 
 ### Chrome
 
+* Replace `activeTab` permission with `tabs` in `dist/manifest.json`
 * Open Chrome Settings
 * Select Extensions
 * Enable developer mode

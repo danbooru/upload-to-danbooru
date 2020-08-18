@@ -1,4 +1,5 @@
 import {TabUtils, makeUrl} from "./utils.js";
+import {setupPageAction} from "./chrome.js";
 
 const MenuID = "upload-to-danbooru";
 const DefaultDanbooruURL = "https://danbooru.donmai.us/";
@@ -37,3 +38,7 @@ browser.pageAction.onClicked.addListener(async function(tab) {
 
     await tabUtils.openPage(url.href, current, background);
 });
+
+if (chrome) {
+    setupPageAction(browser);
+}

@@ -5,6 +5,7 @@ import {
     makeBatchUrl,
     makePostUrl,
     makeUrl,
+    getPageActionMatchRegExp,
     pixivCountQueries,
     pixivExistsQueries,
     nijiePopupCountQueries,
@@ -78,6 +79,19 @@ describe("makeUrl()", function() {
     });
 });
 
+describe("getPageActionMatchRegExp()", function() {
+    it("", function() {
+        const globs = [
+            "https://twitter.com/*/status/*",
+            "https://www.pixiv.net/artworks/*",
+            "https://*.tumblr.com/post/*",
+        ];
+        const result = getPageActionMatchRegExp(globs);
+
+        should(result).instanceOf(RegExp);
+        should(result.source).equal("^https:\\/\\/twitter\\.com\\/.*\\/status\\/.*|^https:\\/\\/www\\.pixiv\\.net\\/artworks\\/.*|^https:\\/\\/.*\\.tumblr\\.com\\/post\\/.*");
+    });
+});
 
 describe("class TabUtils", function() {
     describe("makeUrl()", function() {
