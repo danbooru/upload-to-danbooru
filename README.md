@@ -4,9 +4,17 @@ Add a page action and a context menu option (for images) to upload to ![cardboar
 
 ## Usage
 
+### Page Action
+
 ![Page action demo](/screenshots/page-action.png)
 
+Just visit any Danbooru-supported page, then click ![cardboard box](/danbooru.svg) icon in the address bar.
+
+### Context Menu
+
 ![Context menu demo](/screenshots/context-menu.png)
+
+Right click on any image, select "Upload to Danbooru". Holding <kbd>Ctrl</kbd> while clicking will trigger batch upload.
 
 ## Build
 
@@ -35,7 +43,6 @@ Make sure you have built extension.
 
 ### Chrome
 
-* Replace `activeTab` permission with `tabs` in `dist/manifest.json`
 * Open Chrome Settings
 * Select Extensions
 * Enable developer mode
