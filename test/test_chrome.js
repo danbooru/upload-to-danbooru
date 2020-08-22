@@ -13,52 +13,59 @@ describe("setupPageAction()", function() {
         },
     };
 
-    it("match", async function() {
-        const onUpdated = [];
-        const showCalls = [];
-        const browser = {
+    class Noop {
+        constructor(...args) {
+            this.args = args;
+        }
+    }
+
+    it("", function() {
+        const onInstalled = [];
+        const onPageChanged = [new Object(), new Object(), new Object()];
+        const chrome = {
             runtime: {
-                getManifest() {
-                    return manifest;
-                }
-            },
-            permissions: {
-                contains(permissions) {
-                    return permissions.permissions.find((p) => p === "tabs");
-                }
-            },
-            pageAction: {
-                async show(tabId) {
-                    showCalls.push({tabId});
-                }
-            },
-            tabs: {
-                onUpdated: {
+                onInstalled: {
                     addListener(fn) {
-                        onUpdated.push(fn);
+                        onInstalled.push(fn);
                     }
                 },
-            }
-        };
-
-        await setupPageAction(browser);
-
-        should(onUpdated).length(1);
-
-        await onUpdated[0](999, {}, {id: 999, url: "https://www.pixiv.net/artworks/78653286"});
-
-        should(showCalls).deepEqual([{tabId: 999}]);
-    });
-
-    it("no permissions", async function() {
-        const browser = {
-            permissions: {
-                contains() {
-                    return false;
-                }
+                getManifest() {
+                    return manifest;
+                },
+            },
+            declarativeContent: {
+                PageStateMatcher: Noop,
+                ShowPageAction: Noop,
+                onPageChanged: {
+                    addRules(rules) {
+                        onPageChanged.push(...rules);
+                    },
+                    removeRules(ids, cb) {
+                        onPageChanged.length = 0;
+                        cb();
+                    },
+                },
             },
         };
 
-        await setupPageAction(browser);
+        setupPageAction(chrome);
+
+        should(onInstalled).length(1);
+
+        onInstalled[0]();
+
+        should(onPageChanged).length(1);
+        should(onPageChanged[0].actions).length(1);
+        should(onPageChanged[0].actions[0]).instanceOf(Noop);
+        should(onPageChanged[0].actions[0].args).length(0);
+        should(onPageChanged[0].conditions).length(1);
+        should(onPageChanged[0].conditions[0]).instanceOf(Noop);
+        should(onPageChanged[0].conditions[0].args).deepEqual([
+            {
+                pageUrl: {
+                    urlMatches: "^https://twitter\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*",
+                },
+            },
+        ]);
     });
 });

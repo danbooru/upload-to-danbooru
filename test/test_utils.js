@@ -88,8 +88,7 @@ describe("getPageActionMatchRegExp()", function() {
         ];
         const result = getPageActionMatchRegExp(globs);
 
-        should(result).instanceOf(RegExp);
-        should(result.source).equal("^https:\\/\\/twitter\\.com\\/.*\\/status\\/.*|^https:\\/\\/www\\.pixiv\\.net\\/artworks\\/.*|^https:\\/\\/.*\\.tumblr\\.com\\/post\\/.*");
+        should(result).equal("^https://twitter\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*");
     });
 });
 

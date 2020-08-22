@@ -1,20 +1,24 @@
 import {getPageActionMatchRegExp} from "./utils.js";
 
-export async function setupPageAction(browser) {
-    const hasTabsPermission = await browser.permissions.contains({permissions: ["tabs"]});
-
-    if (!hasTabsPermission) {
-        console.warn("page action is unavailable, missing tabs permission");
-        return;
-    }
-
-    const manifest = browser.runtime.getManifest();
+export function setupPageAction(chrome) {
+    const manifest = chrome.runtime.getManifest();
     const showMatches = manifest["page_action"]["show_matches"];
-    const MatchPageActionUrl = getPageActionMatchRegExp(showMatches);
+    const rule = {
+        conditions: [
+            new chrome.declarativeContent.PageStateMatcher({
+                pageUrl: {
+                    urlMatches: getPageActionMatchRegExp(showMatches),
+                },
+            }),
+        ],
+        actions: [
+            new chrome.declarativeContent.ShowPageAction(),
+        ],
+    };
 
-    browser.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
-        if (MatchPageActionUrl.test(tab.url)) {
-            await browser.pageAction.show(tabId);
-        }
+    chrome.runtime.onInstalled.addListener(function() {
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+            chrome.declarativeContent.onPageChanged.addRules([rule]);
+        });
     });
 }

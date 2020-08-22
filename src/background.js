@@ -40,5 +40,6 @@ browser.pageAction.onClicked.addListener(async function(tab) {
 });
 
 if (chrome) {
-    setupPageAction(browser);
+
+    setupPageAction(chrome);
 }
