@@ -20,7 +20,8 @@ Right click on any image, select "Upload to Danbooru". Holding <kbd>Ctrl</kbd> w
 
 ```sh
 npm i
-npm run build
+npm run build       # Firefox
+npm run buildChrome # Chrome
 ```
 
 Extension package will be located in `web-ext-artifacts/` folder.

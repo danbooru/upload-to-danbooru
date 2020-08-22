@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "buildChrome": "CHROME=yes ./build.sh"
   },
   "exports": {
     "./": "./src/"
