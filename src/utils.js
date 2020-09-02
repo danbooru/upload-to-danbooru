@@ -146,9 +146,15 @@ export function makePostUrl(prefix, url, ref) {
     return uploadUrl;
 }
 
+export const DataURLsNotSupportedError = new Error("Data URLs are not supported");
+
 export async function makeUrl(prefix, batch, info, getReferrer) {
     if (batch) {
         return makeBatchUrl(prefix, info.pageUrl);
+    }
+
+    if (info.srcUrl.startsWith("data:")) {
+        throw DataURLsNotSupportedError;
     }
 
     let ref;

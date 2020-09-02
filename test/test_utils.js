@@ -1,6 +1,7 @@
 import should from "should/as-function.js";
 
 import {
+    DataURLsNotSupportedError,
     TabUtils,
     makeBatchUrl,
     makePostUrl,
@@ -51,6 +52,20 @@ describe("makeUrl()", function() {
         const url = await makeUrl(prefix, true, {pageUrl});
 
         should(url.href).equal("http://example.com/uploads/batch?url=http%3A%2F%2Fexample.net%2Fpost%2F123");
+    });
+
+    it("data url", async function() {
+        let url;
+
+        try {
+            url = await makeUrl(prefix, false, {srcUrl: "data:,test"});
+        } catch(e) {
+            should(e).equal(DataURLsNotSupportedError);
+
+            return;
+        }
+
+        should(url).fail();
     });
 
     it("from page", async function() {
