@@ -19,7 +19,7 @@ const prefix = "http://example.com/";
 const pageUrl = "http://example.net/post/123";
 const frameUrl = "http://example.org/";
 const srcUrl = "http://cdn.example.net/xxx.jpg";
-const tab = {id: 123, url: pageUrl};
+const tab = {id: 123, index: 9, url: pageUrl};
 const nijieUrl = "https://nijie.info/view.php?id=88014";
 const nicoSeigaUrl = "https://seiga.nicovideo.jp/seiga/im2740553";
 const twitterUrl = "https://twitter.com/doodlerush/status/915203652704440321";
@@ -145,6 +145,19 @@ describe("class TabUtils", function() {
             });
         });
 
+        it("newNextToCurrent", function() {
+            const create = (params) => params;
+            const tabUtils = new TabUtils(tab, {create});
+            const result = tabUtils.openPage(pageUrl, false, false, true);
+
+            should(result).deepEqual({
+                active: true,
+                index: 10,
+                openerTabId: tab.id,
+                url: pageUrl,
+            });
+        });
+
         it("background", function() {
             const create = (params) => params;
             const tabUtils = new TabUtils(tab, {create});
@@ -152,6 +165,19 @@ describe("class TabUtils", function() {
             const result = tabUtils.openPage(pageUrl, false, true);
 
             should(result).deepEqual(expected);
+        });
+
+        it("backgroundNextToCurrent", function() {
+            const create = (params) => params;
+            const tabUtils = new TabUtils(tab, {create});
+            const result = tabUtils.openPage(pageUrl, false, true, true);
+
+            should(result).deepEqual({
+                active: false,
+                index: 10,
+                openerTabId: tab.id,
+                url: pageUrl,
+            });
         });
     });
 

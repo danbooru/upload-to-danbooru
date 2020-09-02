@@ -30,16 +30,22 @@ export class TabUtils {
         return (batch ? makeBatchUrl : makePostUrl)(prefix, this.tab.url);
     }
 
-    openPage(url, current, background) {
+    openPage(url, current, background, nextToCurrent) {
         if (current) {
             return this.api.update(this.tab.id, {url});
         }
 
-        return this.api.create({
+        const createProperties = {
             active: !background,
             openerTabId: this.tab.id,
             url: url,
-        });
+        };
+
+        if (nextToCurrent) {
+            createProperties["index"] = this.tab.index + 1;
+        }
+
+        return this.api.create(createProperties);
     }
 
     async getReferrer() {
