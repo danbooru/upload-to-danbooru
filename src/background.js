@@ -3,6 +3,7 @@ import {setupPageAction} from "./chrome.js";
 
 const MenuID = "upload-to-danbooru";
 const DefaultDanbooruURL = "https://danbooru.donmai.us/";
+const IsChrome = Object.getPrototypeOf(browser) !== Object.prototype;
 
 browser.contextMenus.create({
     id: MenuID,
@@ -39,7 +40,6 @@ browser.pageAction.onClicked.addListener(async function(tab) {
     await tabUtils.openPage(url.href, current, background);
 });
 
-if (chrome) {
-
+if (IsChrome) {
     setupPageAction(chrome);
 }
