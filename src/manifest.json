@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "icons": {
         "16": "icons/icon16.png",
         "32": "icons/icon32.png",
