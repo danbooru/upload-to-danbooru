@@ -107,7 +107,19 @@ export class TabUtils {
             return false;
         }
 
-        const code = "document.querySelector('article').querySelectorAll(\"a img[src*='/media/']\").length > 1";
+        const code = `
+let article = document.querySelector("article");
+let result = false;
+
+if (article) {
+    let totalImages = article.querySelectorAll("a img[src*='/media/']").length;
+    let quotedImages = article.querySelectorAll("[role='blockquote'] a img[src*='/media/']").length;
+
+    result = (totalImages - quotedImages) > 1;
+}
+
+result;
+`;
         const results = await this.api.executeScript(this.tab.id, {code});
 
         return !!results.find(Boolean);
