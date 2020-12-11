@@ -134,16 +134,15 @@ result;
 
     async isBatch() {
         const url = this.tab.url;
-        const map = {
-            "https://nijie.info/": "isNijieBatch",
-            "https://sp.nijie.info/": "isNijieBatch",
-            "https://seiga.nicovideo.jp/": "isNicoSeigaBatch",
-            "https://twitter.com/": "isTwitterBatch",
-            "https://www.pixiv.net/": "isPixivBatch",
-        };
+        const map = [
+            [/^https?:\/\/(?:sp\.)?nijie\.info\//, "isNijieBatch"],
+            [/^https:\/\/seiga\.nicovideo\.jp\//, "isNicoSeigaBatch"],
+            [/^https:\/\/twitter\.com\//, "isTwitterBatch"],
+            [/^https:\/\/www\.pixiv\.net\//, "isPixivBatch"],
+        ];
 
-        for (const [prefix, fn] of Object.entries(map)) {
-            if (url.startsWith(prefix)) {
+        for (const [re, fn] of map) {
+            if (re.test(url)) {
                 return await this[fn]();
             }
         }
