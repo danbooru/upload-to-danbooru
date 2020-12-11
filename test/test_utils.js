@@ -3,16 +3,12 @@ import should from "should/as-function.js";
 import {
     DataURLsNotSupportedError,
     TabUtils,
+    asQueryCode,
     makeBatchUrl,
     makePostUrl,
     makeUrl,
     getPageActionMatchRegExp,
-    pixivCountQueries,
-    pixivExistsQueries,
-    nijiePopupCountQueries,
-    nijiePopupExistsQueries,
-    nijieCountQueries,
-    nijieExistsQueries,
+    queryCodes,
 } from "upload-to-danbooru/utils.js";
 
 const prefix = "http://example.com/";
@@ -24,6 +20,20 @@ const nijieUrl = "https://nijie.info/view.php?id=88014";
 const nicoSeigaUrl = "https://seiga.nicovideo.jp/seiga/im2740553";
 const twitterUrl = "https://twitter.com/doodlerush/status/915203652704440321";
 const pixivUrl = "https://www.pixiv.net/en/artworks/46260979";
+
+describe("asQueryCode()", function() {
+    it("one", function() {
+        const code = asQueryCode("css");
+
+        should(code).equal("!!document.querySelector(\"css\")");
+    });
+
+    it("many", function() {
+        const code = asQueryCode("css", 1);
+
+        should(code).equal("document.querySelectorAll(\"css\").length > 1");
+    });
+});
 
 describe("makeBatchUrl()", function() {
     it("", function() {
@@ -231,59 +241,48 @@ describe("class TabUtils", function() {
     });
 
     describe("isGenericBatch()", function() {
-        const matchCodes = [
+        const testQueryCodes = [
             "!!document.querySelector(\"#see-more\")",
             "document.querySelectorAll(\"img\").length > 1",
         ];
-        const existsQueries = ["#miss", "#see-more"];
-        const countQueries = [".miss", "img"];
 
-        it("existsQueries", async function() {
+        it("match", async function() {
             const calls = [];
             async function executeScript(tabId, params) {
                 calls.push({tabId, params});
 
-                return [!!matchCodes.find((c) => c === params.code)];
+                return [true];
             }
             const tabUtils = new TabUtils(tab, {executeScript});
-            const result = await tabUtils.isGenericBatch(existsQueries, []);
+            const result = await tabUtils.isGenericBatch(testQueryCodes);
 
             should(calls).deepEqual([
-                {tabId: tab.id, params: {code: "!!document.querySelector(\"#miss\")"}},
                 {tabId: tab.id, params: {code: "!!document.querySelector(\"#see-more\")"}},
             ]);
             should(result).equal(true);
         });
 
-        it("countQueries", async function() {
+        it("none", async function() {
             const calls = [];
             async function executeScript(tabId, params) {
                 calls.push({tabId, params});
 
-                return [!!matchCodes.find((c) => c === params.code)];
+                return [false];
             }
             const tabUtils = new TabUtils(tab, {executeScript});
-            const result = await tabUtils.isGenericBatch([], countQueries);
+            const result = await tabUtils.isGenericBatch(testQueryCodes);
 
             should(calls).deepEqual([
-                {tabId: tab.id, params: {code: "document.querySelectorAll(\".miss\").length > 1"}},
+                {tabId: tab.id, params: {code: "!!document.querySelector(\"#see-more\")"}},
                 {tabId: tab.id, params: {code: "document.querySelectorAll(\"img\").length > 1"}},
             ]);
-            should(result).equal(true);
-        });
-
-        it("none", async function() {
-            const executeScript = () => [false];
-            const tabUtils = new TabUtils(tab, {executeScript});
-            const result = await tabUtils.isGenericBatch(existsQueries, countQueries);
-
             should(result).equal(false);
         });
 
         it("empty", async function() {
             const executeScript = () => [false];
             const tabUtils = new TabUtils(tab, {executeScript});
-            const result = await tabUtils.isGenericBatch([], []);
+            const result = await tabUtils.isGenericBatch([]);
 
             should(result).equal(false);
         });
@@ -297,8 +296,8 @@ describe("class TabUtils", function() {
             this.isGenericBatchCalls = [];
         }
 
-        isGenericBatch(existsQueries, countQueries) {
-            this.isGenericBatchCalls.push({existsQueries, countQueries});
+        isGenericBatch(...args) {
+            this.isGenericBatchCalls.push(args);
             return isGenericBatchReust;
         }
     }
@@ -310,10 +309,7 @@ describe("class TabUtils", function() {
             const result = tabUtils.isNijieBatch();
 
             should(tabUtils.isGenericBatchCalls).deepEqual([
-                {
-                    existsQueries: nijiePopupExistsQueries,
-                    countQueries: nijiePopupCountQueries,
-                },
+                [queryCodes.nijie.viewPopup],
             ]);
             should(result).equal(isGenericBatchReust);
         });
@@ -324,10 +320,7 @@ describe("class TabUtils", function() {
             const result = tabUtils.isNijieBatch();
 
             should(tabUtils.isGenericBatchCalls).deepEqual([
-                {
-                    existsQueries: nijieExistsQueries,
-                    countQueries: nijieCountQueries,
-                },
+                [queryCodes.nijie.view],
             ]);
             should(result).equal(isGenericBatchReust);
         });
@@ -340,10 +333,7 @@ describe("class TabUtils", function() {
             const result = tabUtils.isPixivBatch();
 
             should(tabUtils.isGenericBatchCalls).deepEqual([
-                {
-                    existsQueries: pixivExistsQueries,
-                    countQueries: pixivCountQueries,
-                },
+                [queryCodes.pixiv],
             ]);
             should(result).equal(isGenericBatchReust);
         });

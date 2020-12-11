@@ -1,24 +1,30 @@
-export const pixivCountQueries = [
-    "img[src*='i.pximg.net/img-master']",
-];
-export const pixivExistsQueries = [
-    ".gtm-manga-viewer-preview-modal-open",
-    "[aria-label='プレビュー']",
-    "[aria-label='Preview']",
-];
-export const nijiePopupCountQueries = [
-    ".illust_click",
-    ".box-shadow999",
-    "img[src*='pic.nijie.net']",
-];
-export const nijiePopupExistsQueries = [
-];
-export const nijieCountQueries = [
-    "#gallery a[href*='view_popup.php']",
-];
-export const nijieExistsQueries = [
-    "#img_diff a",
-];
+export function asQueryCode(query, minCount) {
+    if (minCount && minCount > 0) {
+        return `document.querySelectorAll("${query}").length > ${minCount}`;
+    }
+
+    return `!!document.querySelector("${query}")`;
+}
+
+export const queryCodes = {
+    nijie: {
+        view: [
+            asQueryCode("#gallery a[href*='view_popup.php']", 1),
+            asQueryCode("#img_diff a"),
+        ],
+        viewPopup: [
+            asQueryCode(".illust_click", 1),
+            asQueryCode(".box-shadow999", 1),
+            asQueryCode("img[src*='pic.nijie.net']", 1),
+        ],
+    },
+    pixiv: [
+        asQueryCode("img[src*='i.pximg.net/img-master']", 1),
+        asQueryCode(".gtm-manga-viewer-preview-modal-open"),
+        asQueryCode("[aria-label='プレビュー']"),
+        asQueryCode("[aria-label='Preview']"),
+    ],
+};
 
 export class TabUtils {
     constructor(tab, api) {
@@ -62,19 +68,8 @@ export class TabUtils {
         return "";
     }
 
-    async isGenericBatch(existsQueries, countQueries) {
-        for (const query of existsQueries) {
-            const code = `!!document.querySelector("${query}")`;
-            const results = await this.api.executeScript(this.tab.id, {code});
-            const isBatch = results.find(Boolean);
-
-            if (isBatch) {
-                return true;
-            }
-        }
-
-        for (const query of countQueries) {
-            const code = `document.querySelectorAll("${query}").length > 1`;
+    async isGenericBatch(queryCodes) {
+        for (const code of queryCodes) {
             const results = await this.api.executeScript(this.tab.id, {code});
             const isBatch = results.find(Boolean);
 
@@ -88,14 +83,14 @@ export class TabUtils {
 
     isNijieBatch() {
         if (this.tab.url.includes("view_popup.php")) {
-            return this.isGenericBatch(nijiePopupExistsQueries, nijiePopupCountQueries);
+            return this.isGenericBatch(queryCodes.nijie.viewPopup);
         }
 
-        return this.isGenericBatch(nijieExistsQueries, nijieCountQueries);
+        return this.isGenericBatch(queryCodes.nijie.view);
     }
 
     isPixivBatch() {
-        return this.isGenericBatch(pixivExistsQueries, pixivCountQueries);
+        return this.isGenericBatch(queryCodes.pixiv);
     }
 
     isNicoSeigaBatch() {
