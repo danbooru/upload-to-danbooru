@@ -17,6 +17,7 @@ const frameUrl = "http://example.org/";
 const srcUrl = "http://cdn.example.net/xxx.jpg";
 const tab = {id: 123, index: 9, url: pageUrl};
 const nijieUrl = "https://nijie.info/view.php?id=88014";
+const nijieMobileUrl = "https://sp.nijie.info/view.php?id=88014";
 const nicoSeigaUrl = "https://seiga.nicovideo.jp/seiga/im2740553";
 const twitterUrl = "https://twitter.com/doodlerush/status/915203652704440321";
 const pixivUrl = "https://www.pixiv.net/en/artworks/46260979";
@@ -321,6 +322,28 @@ describe("class TabUtils", function() {
 
             should(tabUtils.isGenericBatchCalls).deepEqual([
                 [queryCodes.nijie.view],
+            ]);
+            should(result).equal(isGenericBatchReust);
+        });
+
+        it("mobile popup", function() {
+            const tab = {id: 999, url: "https://sp.nijie.info/view_popup.php?id=88014"};
+            const tabUtils = new XGenericBatchTabUtils(tab, {});
+            const result = tabUtils.isNijieBatch();
+
+            should(tabUtils.isGenericBatchCalls).deepEqual([
+                [queryCodes.nijie.sp.viewPopup],
+            ]);
+            should(result).equal(isGenericBatchReust);
+        });
+
+        it("mobile regular", function() {
+            const tab = {id: 999, url: nijieMobileUrl};
+            const tabUtils = new XGenericBatchTabUtils(tab, {});
+            const result = tabUtils.isNijieBatch();
+
+            should(tabUtils.isGenericBatchCalls).deepEqual([
+                [queryCodes.nijie.sp.view],
             ]);
             should(result).equal(isGenericBatchReust);
         });

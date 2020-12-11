@@ -34,6 +34,8 @@
 
             "https://nijie.info/view.php?*id=*",
             "https://nijie.info/view_popup.php?*id=*",
+            "https://sp.nijie.info/view.php?*id=*",
+            "https://sp.nijie.info/view_popup.php?*id=*",
 
             "https://pawoo.net/@*/*",
 

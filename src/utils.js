@@ -17,6 +17,15 @@ export const queryCodes = {
             asQueryCode(".box-shadow999", 1),
             asQueryCode("img[src*='pic.nijie.net']", 1),
         ],
+        sp: {
+            view: [
+                asQueryCode("#manga"),
+            ],
+            viewPopup: [
+                asQueryCode(".popup_illust", 1),
+                asQueryCode("img[src*='pic.nijie.net']", 1),
+            ],
+        },
     },
     pixiv: [
         asQueryCode("img[src*='i.pximg.net/img-master']", 1),
@@ -82,11 +91,14 @@ export class TabUtils {
     }
 
     isNijieBatch() {
-        if (this.tab.url.includes("view_popup.php")) {
-            return this.isGenericBatch(queryCodes.nijie.viewPopup);
+        const url = this.tab.url;
+        const codes = url.includes("://sp.") ? queryCodes.nijie.sp : queryCodes.nijie;
+
+        if (url.includes("view_popup.php")) {
+            return this.isGenericBatch(codes.viewPopup);
         }
 
-        return this.isGenericBatch(queryCodes.nijie.view);
+        return this.isGenericBatch(codes.view);
     }
 
     isPixivBatch() {
@@ -124,6 +136,7 @@ result;
         const url = this.tab.url;
         const map = {
             "https://nijie.info/": "isNijieBatch",
+            "https://sp.nijie.info/": "isNijieBatch",
             "https://seiga.nicovideo.jp/": "isNicoSeigaBatch",
             "https://twitter.com/": "isTwitterBatch",
             "https://www.pixiv.net/": "isPixivBatch",
