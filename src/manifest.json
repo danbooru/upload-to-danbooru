@@ -24,6 +24,7 @@
 
             "https://www.pixiv.net/artworks/*",
             "https://www.pixiv.net/en/artworks/*",
+            "https://sketch.pixiv.net/items/*",
             "https://*.fanbox.cc/posts/*",
 
             "https://seiga.nicovideo.jp/seiga/im*",
@@ -39,6 +40,7 @@
             "https://sp.nijie.info/view_popup.php?*id=*",
 
             "https://pawoo.net/@*/*",
+            "https://pawoo.net/web/statuses/*",
 
             "https://m.weibo.cn/detail/*",
             "https://m.weibo.cn/status/*",
@@ -46,6 +48,12 @@
             "https://www.hentai-foundry.com/pictures/user/*",
 
             "https://www.newgrounds.com/art/view/*",
+
+            "https://www.artstation.com/artwork/*",
+            "https://*.artstation.com/projects/*",
+
+            "https://yande.re/post/show/*",
+            "https://konachan.com/post/show/*",
 
             "https://*.tumblr.com/post/*"
         ]
