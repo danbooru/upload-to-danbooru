@@ -33,6 +33,10 @@ export const queryCodes = {
         asQueryCode("[aria-label='プレビュー']"),
         asQueryCode("[aria-label='Preview']"),
     ],
+    fanbox: [
+        asQueryCode("article figure"),
+        asQueryCode("img[src^='https://downloads.fanbox.cc/images/post/']", 1),
+    ],
 };
 
 export class TabUtils {
@@ -105,6 +109,10 @@ export class TabUtils {
         return this.isGenericBatch(queryCodes.pixiv);
     }
 
+    isFanboxBatch() {
+        return this.isGenericBatch(queryCodes.fanbox);
+    }
+
     isNicoSeigaBatch() {
         return this.tab.url.includes("watch/mg");
     }
@@ -139,6 +147,7 @@ result;
             [/^https:\/\/seiga\.nicovideo\.jp\//, "isNicoSeigaBatch"],
             [/^https:\/\/twitter\.com\//, "isTwitterBatch"],
             [/^https:\/\/www\.pixiv\.net\//, "isPixivBatch"],
+            [/^https:\/\/.+?\.fanbox\.cc\/posts\//, "isFanboxBatch"],
         ];
 
         for (const [re, fn] of map) {

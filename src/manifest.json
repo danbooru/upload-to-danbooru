@@ -24,6 +24,7 @@
 
             "https://www.pixiv.net/artworks/*",
             "https://www.pixiv.net/en/artworks/*",
+            "https://*.fanbox.cc/posts/*",
 
             "https://seiga.nicovideo.jp/seiga/im*",
             "https://seiga.nicovideo.jp/watch/mg*",

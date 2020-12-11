@@ -21,6 +21,7 @@ const nijieMobileUrl = "https://sp.nijie.info/view.php?id=88014";
 const nicoSeigaUrl = "https://seiga.nicovideo.jp/seiga/im2740553";
 const twitterUrl = "https://twitter.com/doodlerush/status/915203652704440321";
 const pixivUrl = "https://www.pixiv.net/en/artworks/46260979";
+const fanboxUrl = "https://setamo.fanbox.cc/posts/1265081";
 
 describe("asQueryCode()", function() {
     it("one", function() {
@@ -362,6 +363,19 @@ describe("class TabUtils", function() {
         });
     });
 
+    describe("isFanboxBatch()", function() {
+        it("", function() {
+            const tab = {id: 999, url: fanboxUrl};
+            const tabUtils = new XGenericBatchTabUtils(tab, {});
+            const result = tabUtils.isFanboxBatch();
+
+            should(tabUtils.isGenericBatchCalls).deepEqual([
+                [queryCodes.fanbox],
+            ]);
+            should(result).equal(isGenericBatchReust);
+        });
+    });
+
     describe("isNicoSeigaBatch()", function() {
         it("manga", function() {
             const tab = {id: 999, url: "https://seiga.nicovideo.jp/watch/mg188311"};
@@ -442,6 +456,10 @@ describe("class TabUtils", function() {
             isPixivBatch() {
                 return this.isXBatch("pixiv");
             }
+
+            isFanboxBatch() {
+                return this.isXBatch("fanbox");
+            }
         }
 
         for (const url of urls) {
@@ -488,6 +506,14 @@ describe("class TabUtils", function() {
         it("pixiv", async function() {
             const tab = {id: 999, url: pixivUrl};
             const tabUtils = new XTabUtils(tab, {}, "pixiv", isBatch);
+            const result = await tabUtils.isBatch();
+
+            should(result).equal(isBatch);
+        });
+
+        it("fanbox", async function() {
+            const tab = {id: 999, url: fanboxUrl};
+            const tabUtils = new XTabUtils(tab, {}, "fanbox", isBatch);
             const result = await tabUtils.isBatch();
 
             should(result).equal(isBatch);
