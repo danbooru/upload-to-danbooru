@@ -2,8 +2,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16" width="16" version="1.1">
 	<defs>
 		<linearGradient id="bg" gradientTransform="rotate(85)">
-			<stop offset="50%" stop-color="#ba9570" />
-			<stop offset="70%" stop-color="#a4815f" />
+			<stop offset="49%" stop-color="#ba9570" />
+			<stop offset="67%" stop-color="#a4815f" />
 		</linearGradient>
 	</defs>
 	<g>
