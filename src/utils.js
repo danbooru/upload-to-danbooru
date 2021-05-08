@@ -39,6 +39,37 @@ export const queryCodes = {
     ],
 };
 
+export function regexFixup(matchURLRegex, ...args) {
+    return {
+        match(url) {
+            return matchURLRegex.test(url);
+        },
+        fix(url) {
+            for (let [match, replaceWith] of args) {
+                url = url.replace(match, replaceWith);
+            }
+            return url
+        },
+    };
+}
+
+export const urlFixups = [
+    regexFixup(/\.hdslb\.com\//, [/@.*/, ""]),
+    regexFixup(/:\/\/media.discordapp.net\//, [/\?.*/, ""]),
+    regexFixup(/\.pinimg\.com\//, [/\/\d+x\//, "/originals/"]),
+    regexFixup(/(pixiv|booth)\.pximg\.net\//, [/\/c\/\d+x\d+.*?\//, "/"], [/_base_resized/, ""]),
+    regexFixup(/:\/\/c\.fantia.jp\//, [/(\d+)\/.*?_/, "$1/"]),
+];
+
+export function fixUrl(url) {
+    for (let fixup of urlFixups) {
+        if (fixup.match(url)) {
+            url = fixup.fix(url);
+        }
+    }
+    return url;
+}
+
 export class TabUtils {
     constructor(tab, api) {
         this.tab = tab;
@@ -171,6 +202,8 @@ export function makeBatchUrl(prefix, url) {
 export function makePostUrl(prefix, url, ref) {
     const uploadUrl = new URL("uploads/new", prefix);
 
+
+
     uploadUrl.searchParams.set("url", url);
 
     if (ref) {
@@ -203,7 +236,7 @@ export async function makeUrl(prefix, batch, info, getReferrer) {
         ref = info.pageUrl;
     }
 
-    return makePostUrl(prefix, info.srcUrl, ref);
+    return makePostUrl(prefix, fixUrl(info.srcUrl), ref);
 }
 
 export function getPageActionMatchRegExp(globs) {

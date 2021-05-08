@@ -4,6 +4,7 @@ import {
     DataURLsNotSupportedError,
     TabUtils,
     asQueryCode,
+    fixUrl,
     makeBatchUrl,
     makePostUrl,
     makeUrl,
@@ -35,6 +36,47 @@ describe("asQueryCode()", function() {
 
         should(code).equal("document.querySelectorAll(\"css\").length > 1");
     });
+});
+
+describe("fixUrl()", function() {
+    const testCases = [
+        {
+            name: "bilibili",
+            url: "https://i0.hdslb.com/bfs/album/7cebff5e5f45b17a7aba554bef68b6e84a5f483a.jpg@240w_320h_1e_1c.webp",
+            expected: "https://i0.hdslb.com/bfs/album/7cebff5e5f45b17a7aba554bef68b6e84a5f483a.jpg",
+        },
+        {
+            name: "discord",
+            url: "https://media.discordapp.net/attachments/310432830138089472/722011243862556772/omegalbert_2.png?width=400&height=274",
+            expected: "https://media.discordapp.net/attachments/310432830138089472/722011243862556772/omegalbert_2.png",
+        },
+        {
+            name: "pinterest",
+            url: "https://i.pinimg.com/736x/73/e8/2d/73e82d272de705bb8fad33e89c0543e5.jpg",
+            expected: "https://i.pinimg.com/originals/73/e8/2d/73e82d272de705bb8fad33e89c0543e5.jpg",
+        },
+        {
+            name: "fanbox",
+            url: "https://pixiv.pximg.net/c/1620x580_90_a2_g5/fanbox/public/images/creator/228078/cover/tHi9VtLFvJW4RS1h1DVpttRQ.jpeg",
+            expected: "https://pixiv.pximg.net/fanbox/public/images/creator/228078/cover/tHi9VtLFvJW4RS1h1DVpttRQ.jpeg",
+        },
+        {
+            name: "booth",
+            url: "https://booth.pximg.net/c/300x300_a2_g5/14df0a03-2f5f-4292-bb5a-94a3881df4f0/i/2926394/24c0b971-8807-4d40-8089-bdbf34089056_base_resized.jpg",
+            expected: "https://booth.pximg.net/14df0a03-2f5f-4292-bb5a-94a3881df4f0/i/2926394/24c0b971-8807-4d40-8089-bdbf34089056.jpg",
+        },
+        {
+            name: "fantia",
+            url: "https://c.fantia.jp/uploads/post/file/709449/main_324b4503-c64b-428b-875c-eaa273861268.png",
+            expected: "https://c.fantia.jp/uploads/post/file/709449/324b4503-c64b-428b-875c-eaa273861268.png",
+        },
+    ]
+
+    for (let t of testCases) {
+        it(t.name, function() {
+            should(fixUrl(t.url)).equal(t.expected);
+        });
+    }
 });
 
 describe("makeBatchUrl()", function() {
