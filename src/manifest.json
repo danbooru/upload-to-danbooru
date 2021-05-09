@@ -27,6 +27,8 @@
             "https://sketch.pixiv.net/items/*",
             "https://*.fanbox.cc/posts/*",
 
+            "https://skeb.jp/@*/works/*",
+
             "https://seiga.nicovideo.jp/seiga/im*",
             "https://seiga.nicovideo.jp/watch/mg*",
 
