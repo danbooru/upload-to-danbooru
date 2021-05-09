@@ -15,13 +15,13 @@
     "./": "./src/"
   },
   "dependencies": {
-    "webextension-polyfill": "^0.7.0"
+    "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
-    "eslint": "^7.15.0",
-    "mocha": "^8.2.1",
+    "eslint": "^7.26.0",
+    "mocha": "^8.4.0",
     "should": "^13.2.3",
-    "web-ext": "^5.4.1"
+    "web-ext": "^6.1.0"
   },
   "repository": {
     "type": "git",
