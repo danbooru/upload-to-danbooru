@@ -5,11 +5,11 @@ set -v
 
 rm -fr dist/
 mkdir dist
-cp -t dist/ node_modules/webextension-polyfill/dist/browser-polyfill.js{,.map}
 cp -a src/. dist/
 
 if [ x$CHROME = xyes ]; then
     ./chromeifyManifest.js src/manifest.json > dist/manifest.json
+    rm dist/background.html
 
     FILENAME="{name}-{version}-chrome.zip"
 else

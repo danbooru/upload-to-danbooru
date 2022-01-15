@@ -1,44 +1,3 @@
-export function asQueryCode(query, minCount) {
-    if (minCount && minCount > 0) {
-        return `document.querySelectorAll("${query}").length > ${minCount}`;
-    }
-
-    return `!!document.querySelector("${query}")`;
-}
-
-export const queryCodes = {
-    nijie: {
-        view: [
-            asQueryCode("#gallery a[href*='view_popup.php']", 1),
-            asQueryCode("#img_diff a"),
-        ],
-        viewPopup: [
-            asQueryCode(".illust_click", 1),
-            asQueryCode(".box-shadow999", 1),
-            asQueryCode("img[src*='pic.nijie.net']", 1),
-        ],
-        sp: {
-            view: [
-                asQueryCode("#manga"),
-            ],
-            viewPopup: [
-                asQueryCode(".popup_illust", 1),
-                asQueryCode("img[src*='pic.nijie.net']", 1),
-            ],
-        },
-    },
-    pixiv: [
-        asQueryCode("img[src*='i.pximg.net/img-master']", 1),
-        asQueryCode(".gtm-manga-viewer-preview-modal-open"),
-        asQueryCode("[aria-label='プレビュー']"),
-        asQueryCode("[aria-label='Preview']"),
-    ],
-    fanbox: [
-        asQueryCode("article figure"),
-        asQueryCode("img[src^='https://downloads.fanbox.cc/images/post/']", 1),
-    ],
-};
-
 export function regexFixup(matchURLRegex, ...args) {
     return {
         match(url) {
@@ -48,7 +7,7 @@ export function regexFixup(matchURLRegex, ...args) {
             for (let [match, replaceWith] of args) {
                 url = url.replace(match, replaceWith);
             }
-            return url
+            return url;
         },
     };
 }
@@ -96,98 +55,6 @@ export class TabUtils {
         }
 
         return this.api.create(createProperties);
-    }
-
-    async getReferrer() {
-        const code = "document.referrer";
-
-        try {
-            const results = await this.api.executeScript(this.tab.id, {code});
-
-            return results.find(Boolean) || "";
-        } catch (err) {
-            console.error("failed to get referrer", err);
-        }
-
-        return "";
-    }
-
-    async isGenericBatch(queryCodes) {
-        for (const code of queryCodes) {
-            const results = await this.api.executeScript(this.tab.id, {code});
-            const isBatch = results.find(Boolean);
-
-            if (isBatch) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    isNijieBatch() {
-        const url = this.tab.url;
-        const codes = url.includes("://sp.") ? queryCodes.nijie.sp : queryCodes.nijie;
-
-        if (url.includes("view_popup.php")) {
-            return this.isGenericBatch(codes.viewPopup);
-        }
-
-        return this.isGenericBatch(codes.view);
-    }
-
-    isPixivBatch() {
-        return this.isGenericBatch(queryCodes.pixiv);
-    }
-
-    isFanboxBatch() {
-        return this.isGenericBatch(queryCodes.fanbox);
-    }
-
-    isNicoSeigaBatch() {
-        return this.tab.url.includes("watch/mg");
-    }
-
-    async isTwitterBatch() {
-        if (this.tab.url.includes("/photo/")) {
-            return false;
-        }
-
-        const code = `
-let article = document.querySelector("article");
-let result = false;
-
-if (article) {
-    let totalImages = article.querySelectorAll("a img[src*='/media/']").length;
-    let quotedImages = article.querySelectorAll("[role='blockquote'] a img[src*='/media/']").length;
-
-    result = (totalImages - quotedImages) > 1;
-}
-
-result;
-`;
-        const results = await this.api.executeScript(this.tab.id, {code});
-
-        return !!results.find(Boolean);
-    }
-
-    async isBatch() {
-        const url = this.tab.url;
-        const map = [
-            [/^https?:\/\/(?:sp\.)?nijie\.info\//, "isNijieBatch"],
-            [/^https:\/\/seiga\.nicovideo\.jp\//, "isNicoSeigaBatch"],
-            [/^https:\/\/twitter\.com\//, "isTwitterBatch"],
-            [/^https:\/\/www\.pixiv\.net\//, "isPixivBatch"],
-            [/^https:\/\/.+?\.fanbox\.cc\/posts\//, "isFanboxBatch"],
-        ];
-
-        for (const [re, fn] of map) {
-            if (re.test(url)) {
-                return await this[fn]();
-            }
-        }
-
-        return false;
     }
 }
 
@@ -241,4 +108,12 @@ export async function makeUrl(prefix, batch, info, getReferrer) {
 
 export function getPageActionMatchRegExp(globs) {
     return globs.map((glob) => "^" + glob.replace(/\./g, "\\.").replace(/\*/g, ".*")).join("|");
+}
+
+export function getAPI(ctx) {
+    if (ctx.browser) {
+        return [ctx.browser, false];
+    }
+
+    return [ctx.chrome, true];
 }

@@ -1,10 +1,21 @@
 export function chromeifyManifest(manifest) {
-    const permissions = new Set(manifest["permissions"]);
+    manifest["manifest_version"] = 3;
+    manifest["minimum_chrome_version"] = "97";
+    manifest["permissions"] = [
+        "declarativeContent",
+        ...manifest["permissions"],
+    ];
+    manifest["action"] = manifest["page_action"];
+    manifest["web_accessible_resources"] = [{
+        "resources": manifest["web_accessible_resources"],
+        "matches": ["*://*/*"],
+    }];
+    manifest["background"] = {
+        "service_worker": "background.js",
+        "type": "module",
+    };
 
-    permissions.add("declarativeContent");
-
-    manifest["permissions"] = Array.from(permissions).sort();
-
+    delete manifest["page_action"];
     delete manifest["browser_specific_settings"];
     delete manifest["options_ui"]["browser_style"];
 

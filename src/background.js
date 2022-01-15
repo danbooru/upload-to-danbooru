@@ -1,47 +1,17 @@
-import {TabUtils, makeUrl} from "./utils.js";
-import {setupPageAction} from "./chrome.js";
+import { BrowserStorageSettings } from "./settings.js";
+import { UploadToDanbooru } from "./uploadToDanbooru.js";
+import { getAPI } from "./utils.js";
+import { TabMessagingProtocol, getTabMessenger } from "./messaging.js";
 
-const MenuID = "upload-to-danbooru";
-const DefaultDanbooruURL = "https://danbooru.donmai.us/";
-const IsChrome = Object.getPrototypeOf(browser) !== Object.prototype;
+const [api, isChrome] = getAPI(globalThis);
+const settings = new BrowserStorageSettings(api);
+const tabMessenger = getTabMessenger(api, isChrome);
+const tabMessagingProtocol = new TabMessagingProtocol(tabMessenger);
+const uploadToDanbooru = new UploadToDanbooru(
+    api,
+    isChrome,
+    settings,
+    tabMessagingProtocol,
+);
 
-browser.contextMenus.create({
-    id: MenuID,
-    title: "Upload to &Danbooru",
-    contexts: ["image"],
-});
-
-browser.contextMenus.onClicked.addListener(async function(info, tab) {
-    if (info.menuItemId !== MenuID) {
-        return;
-    }
-
-    const settings = await browser.storage.sync.get(["url", "openIn"]);
-    const danbooruUrl = settings.url || DefaultDanbooruURL;
-    const batch = (info.modifiers || []).some((key) => key === "Ctrl");
-    const tabUtils = new TabUtils(tab, browser.tabs);
-    const getReferrer = () => tabUtils.getReferrer();
-    const url = await makeUrl(danbooruUrl, batch, info, getReferrer);
-    const current = settings.openIn === "current";
-    const background = settings.openIn === "background";
-    const nextToCurrent = IsChrome;
-
-    await tabUtils.openPage(url.href, current, background, nextToCurrent);
-});
-
-browser.pageAction.onClicked.addListener(async function(tab) {
-    const settings = await browser.storage.sync.get(["url", "openIn"]);
-    const danbooruUrl = settings.url || DefaultDanbooruURL;
-    const tabUtils = new TabUtils(tab, browser.tabs);
-    const batch = await tabUtils.isBatch();
-    const url = tabUtils.makeUrl(danbooruUrl, batch);
-    const current = settings.openIn === "current";
-    const background = settings.openIn === "background";
-    const nextToCurrent = IsChrome;
-
-    await tabUtils.openPage(url.href, current, background, nextToCurrent);
-});
-
-if (IsChrome) {
-    setupPageAction(chrome);
-}
+uploadToDanbooru.init();

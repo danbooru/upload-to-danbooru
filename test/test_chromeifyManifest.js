@@ -38,7 +38,7 @@ function makeManifest() {
             "contextMenus",
             "storage",
         ],
-        "minimum_chrome_version": "55",
+        "web_accessible_resources": ["aaa.js", "bbb.js"],
         "browser_specific_settings": {
             "gecko": {
                 "id": "admin@localhost",
@@ -50,13 +50,33 @@ function makeManifest() {
 
 function makeChromeManifest() {
     return {
-        "manifest_version": 2,
+        "manifest_version": 3,
         "name": "Test",
         "version": "0.0.1",
         "icons": {
             "16": "test.png",
         },
-        "page_action": {
+        "options_ui": {
+            "page": "options.html",
+        },
+        "background": {
+            "service_worker": "background.js",
+            "type": "module",
+        },
+        "permissions": [
+            "declarativeContent",
+            "activeTab",
+            "contextMenus",
+            "storage",
+        ],
+        "web_accessible_resources": [
+            {
+                "resources": ["aaa.js", "bbb.js"],
+                "matches": ["*://*/*"],
+            },
+        ],
+        "minimum_chrome_version": "97",
+        "action": {
             "default_icon": {
                 "16": "test.png",
             },
@@ -67,19 +87,6 @@ function makeChromeManifest() {
                 "https://example.org/*",
             ],
         },
-        "options_ui": {
-            "page": "options.html",
-        },
-        "background": {
-            "page": "background.html",
-        },
-        "permissions": [
-            "activeTab",
-            "contextMenus",
-            "declarativeContent",
-            "storage",
-        ],
-        "minimum_chrome_version": "55",
     };
 }
 
