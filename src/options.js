@@ -1,6 +1,7 @@
 import {BrowserStorageSettings, FormManager} from "./settings.js";
+import { getAPI } from "./utils.js";
 
-const api = globalThis.browser || globalThis.chrome;
+const [api, isChrome] = getAPI(globalThis);
 const form = document.forms.settings;
 const settings = new BrowserStorageSettings(api);
 const defaults = {url: "", openIn: "new"};
@@ -10,6 +11,12 @@ async function saveOptions(e) {
     e.preventDefault();
 
     await formManager.save("url", "openIn");
+
+    if (isChrome) {
+        window.close();
+    } else {
+        alert("Saved.");
+    }
 }
 
 async function restoreOptions() {
