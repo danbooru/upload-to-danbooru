@@ -3,6 +3,7 @@ export function chromeifyManifest(manifest) {
     manifest["minimum_chrome_version"] = "97";
     manifest["permissions"] = [
         "declarativeContent",
+        "scripting",
         ...manifest["permissions"],
     ];
     manifest["action"] = manifest["page_action"];

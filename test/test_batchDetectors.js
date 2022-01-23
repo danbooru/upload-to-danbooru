@@ -16,6 +16,7 @@ import {
     NijieSPBatchDetector,
     SkebBatchDetector,
     PawooBatchDetector,
+    match,
 } from "upload-to-danbooru/batchDetectors.js";
 
 const any = new Object();
@@ -465,4 +466,40 @@ describe("PawooBatchDetector", function() {
             m(".media-gallery__item-thumbnail", 1),
         ]);
     });
+});
+
+describe("match()", function() {
+    const table = [
+        ["twitter.com", TwitterBatchDetector],
+        ["test.twitter.com", undefined],
+        ["pixiv.net", undefined],
+        ["test.pixiv.net", undefined],
+        ["www.pixiv.net", PixivBatchDetector],
+        ["fanbox.cc", undefined],
+        ["test.fanbox.cc", FanboxBatchDetector],
+        ["lofter.com", undefined],
+        ["test.lofter.com", LofterBatchDetector],
+        ["nicovideo.jp", undefined],
+        ["www.nicovideo.jp", undefined],
+        ["seiga.nicovideo.jp", NicoSeigaBatchDetector],
+        ["nijie.info", NijieBatchDetector],
+        ["sp.nijie.info", NijieSPBatchDetector],
+        ["test.nijie.info", undefined],
+        ["skeb.jp", SkebBatchDetector],
+        ["test.skeb.jp", undefined],
+        ["pawoo.net", PawooBatchDetector],
+        ["test.pawoo.net", undefined],
+        ["example.com", undefined],
+        ["", undefined],
+    ];
+
+    for (const [host, expectedCls] of table) {
+        const name = expectedCls ? expectedCls.name : "[none]";
+
+        it(`${host || "[empty]"} -> ${name}`, function() {
+            const cls = match(host);
+
+            should(cls).equal(expectedCls);
+        });
+    }
 });

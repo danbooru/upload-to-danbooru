@@ -1,10 +1,17 @@
 import {TabUtils, makeUrl, getPageActionMatchRegExp} from "./utils.js";
 
 export class UploadToDanbooru {
-    constructor(browser, isChrome, settings, tabMessagingProtocol) {
+    constructor(
+        browser,
+        isChrome,
+        settings,
+        tabMessagingProtocol,
+        batchDetectorInjector,
+    ) {
         this.browser = browser;
         this.settings = settings;
         this.tabMessagingProtocol = tabMessagingProtocol;
+        this.batchDetectorInjector = batchDetectorInjector;
         this.manifest = browser.runtime.getManifest();
         this.isChrome = isChrome;
         this.menuID = "upload-to-danbooru";
@@ -62,6 +69,14 @@ export class UploadToDanbooru {
         this.browser.declarativeContent.onPageChanged.addRules([rule]);
     }
 
+    makeGetReferrerCallback(tabId) {
+        return async () => {
+            await this.batchDetectorInjector.inject(tabId);
+
+            return await this.tabMessagingProtocol.getReferrer(tabId);
+        };
+    }
+
     async onContextMenuClicked(info, tab) {
         if (info.menuItemId !== this.menuID) {
             return;
@@ -71,8 +86,12 @@ export class UploadToDanbooru {
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
         const batch = (info.modifiers || []).some((key) => key === "Ctrl");
         const tabUtils = new TabUtils(tab, this.browser.tabs);
-        const getReferrer = () => this.tabMessagingProtocol.getReferrer(tab.id);
-        const url = await makeUrl(danbooruUrl, batch, info, getReferrer);
+        const url = await makeUrl(
+            danbooruUrl,
+            batch,
+            info,
+            this.makeGetReferrerCallback(tab.id),
+        );
         const current = settings.openIn === "current";
         const background = settings.openIn === "background";
         const nextToCurrent = this.isChrome;
@@ -81,6 +100,8 @@ export class UploadToDanbooru {
     }
 
     async onPageActionClicked(tab) {
+        await this.batchDetectorInjector.inject(tab.id);
+
         const settings = await this.settings.get("url", "openIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
         const tabUtils = new TabUtils(tab, this.browser.tabs);

@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "icons": {
         "16": "icons/icon16.png",
         "32": "icons/icon32.png",
@@ -66,39 +66,6 @@
             "https://*.tumblr.com/post/*"
         ]
     },
-    "content_scripts": [
-        {
-            "matches": ["https://*/*", "http://*/*"],
-            "js": ["contentScripts/common.js"]
-        }, {
-            "matches": ["https://www.pixiv.net/*"],
-            "js": ["contentScripts/pixiv.js"]
-        }, {
-            "matches": ["https://*.fanbox.cc/*"],
-            "js": ["contentScripts/fanbox.js"]
-        }, {
-            "matches": ["https://*.lofter.com/*"],
-            "js": ["contentScripts/lofter.js"]
-        }, {
-            "matches": ["https://nijie.info/*"],
-            "js": ["contentScripts/nijie.js"]
-        }, {
-            "matches": ["https://sp.nijie.info/*"],
-            "js": ["contentScripts/nijieSP.js"]
-        }, {
-            "matches": ["https://seiga.nicovideo.jp/*"],
-            "js": ["contentScripts/nicoSeiga.js"]
-        }, {
-            "matches": ["https://skeb.jp/*"],
-            "js": ["contentScripts/skeb.js"]
-        }, {
-            "matches": ["https://pawoo.net/*"],
-            "js": ["contentScripts/pawoo.js"]
-        }, {
-            "matches": ["https://twitter.com/*"],
-            "js": ["contentScripts/twitter.js"]
-        }
-    ],
     "web_accessible_resources": ["batchDetectors.js"],
     "options_ui": {
         "page": "options.html",

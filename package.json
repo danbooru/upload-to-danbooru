@@ -1,6 +1,6 @@
 {
   "name": "upload-to-danbooru",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Add a context menu option for images to upload to Danbooru.",
   "type": "module",
   "directories": {

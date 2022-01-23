@@ -52,6 +52,16 @@ export class TabMessagingProtocol {
         this.tabMessenger = tabMessenger;
     }
 
+    async ping(tabId) {
+        try {
+            const response = await this.tabMessenger.send(tabId, "ping");
+
+            return !!(response && response.pong);
+        } catch(e) {
+            return false;
+        }
+    }
+
     async getReferrer(tabId) {
         const response = await this.tabMessenger.send(tabId, "getReferrer");
 
@@ -63,12 +73,4 @@ export class TabMessagingProtocol {
 
         return !!(response && response.isBatch);
     }
-}
-
-export function getTabMessenger(api, isChrome) {
-    if (isChrome) {
-        return new ChromeTabMessenger(api);
-    }
-
-    return new BrowserTabMessenger(api);
 }

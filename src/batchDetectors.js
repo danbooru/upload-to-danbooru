@@ -213,3 +213,49 @@ export class PawooBatchDetector extends GenericBatchDetector {
         ];
     }
 }
+
+const BatchDetectorByHost = {
+    "cc": {
+        "fanbox": {"*": FanboxBatchDetector},
+    },
+    "com": {
+        "lofter": {"*": LofterBatchDetector},
+        "twitter": {".": TwitterBatchDetector},
+    },
+    "info": {
+        "nijie": {
+            ".": NijieBatchDetector,
+            "sp": {".": NijieSPBatchDetector},
+        },
+    },
+    "jp": {
+        "nicovideo": {
+            "seiga": {".": NicoSeigaBatchDetector},
+        },
+        "skeb": {".": SkebBatchDetector},
+    },
+    "net": {
+        "pawoo": {".": PawooBatchDetector},
+        "pixiv": {
+            "www": {".": PixivBatchDetector},
+        },
+    },
+};
+
+export function match(hostname) {
+    const path = hostname.split(".");
+    let rules = BatchDetectorByHost;
+
+    while (path.length > 0) {
+        const component = path.pop();
+        const subrules = rules[component];
+
+        if (subrules) {
+            rules = subrules;
+        } else {
+            return rules["*"];
+        }
+    }
+
+    return rules["."];
+}

@@ -6,7 +6,6 @@ import {
     BrowserTabMessenger,
     ChromeTabMessenger,
     TabMessagingProtocol,
-    getTabMessenger,
 } from "upload-to-danbooru/messaging.js";
 
 describe("TabMessenger", function() {
@@ -94,12 +93,20 @@ describe("ChromeTabMessenger", function() {
 });
 
 describe("TabMessagingProtocol", function() {
-    class TestTabMessenger {
+    class TestTabMessenger extends TabMessenger {
         constructor(responses) {
+            super();
+
             this.responses = responses;
         }
         async send(tabId, type) {
-            return this.responses[tabId][type];
+            const response = this.responses[tabId][type];
+
+            if (response instanceof Error) {
+                throw response;
+            }
+
+            return response;
         }
     }
 
@@ -109,8 +116,14 @@ describe("TabMessagingProtocol", function() {
         2: {getReferrer: {referrer: ""}},
         3: {detectBatch: {isBatch: true}},
         4: {detectBatch: {isBatch: false}},
+        5: {ping: {pong: true}},
+        6: {ping: new Error("test error")},
     });
     const proto = new TabMessagingProtocol(tm);
+
+    it("getReferrer() empty", async function() {
+        should(await proto.getReferrer(2)).equal("");
+    });
 
     it("getReferrer() ok", async function() {
         should(await proto.getReferrer(1)).equal("http://example.com");
@@ -135,20 +148,16 @@ describe("TabMessagingProtocol", function() {
     it("isBatch() no response", async function() {
         should(await proto.isBatch(0)).equal(false);
     });
-});
 
-describe("getTabMessenger()", function() {
-    const api = new Object();
-
-    it("chrome", function() {
-        const tm = getTabMessenger(api, true);
-
-        should(tm).instanceof(ChromeTabMessenger);
+    it("ping() ok", async function() {
+        should(await proto.ping(5)).equal(true);
     });
 
-    it("browser", function() {
-        const tm = getTabMessenger(api, false);
+    it("ping() empty", async function() {
+        should(await proto.ping(0)).equal(false);
+    });
 
-        should(tm).instanceof(BrowserTabMessenger);
+    it("ping() error", function() {
+        should(proto.ping(6)).rejectedWith("test error");
     });
 });
