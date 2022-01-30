@@ -7,11 +7,13 @@ export class UploadToDanbooru {
         settings,
         tabMessagingProtocol,
         batchDetectorInjector,
+        urlOpenerClass,
     ) {
         this.browser = browser;
         this.settings = settings;
         this.tabMessagingProtocol = tabMessagingProtocol;
         this.batchDetectorInjector = batchDetectorInjector;
+        this.urlOpenerClass = urlOpenerClass;
         this.manifest = browser.runtime.getManifest();
         this.isChrome = isChrome;
         this.menuID = "upload-to-danbooru";
@@ -29,6 +31,10 @@ export class UploadToDanbooru {
         }
 
         return this.browser.pageAction;
+    }
+
+    getUrlOpener(tab) {
+        return new this.urlOpenerClass(this.browser, tab);
     }
 
     init() {
@@ -85,18 +91,15 @@ export class UploadToDanbooru {
         const settings = await this.settings.get("url", "openIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
         const batch = (info.modifiers || []).some((key) => key === "Ctrl");
-        const tabUtils = new TabUtils(tab, this.browser.tabs);
         const url = await makeUrl(
             danbooruUrl,
             batch,
             info,
             this.makeGetReferrerCallback(tab.id),
         );
-        const current = settings.openIn === "current";
-        const background = settings.openIn === "background";
-        const nextToCurrent = this.isChrome;
+        const urlOpener = this.getUrlOpener(tab);
 
-        await tabUtils.openPage(url.href, current, background, nextToCurrent);
+        await urlOpener.open(url.href, settings.openIn);
     }
 
     async onPageActionClicked(tab) {
@@ -107,10 +110,8 @@ export class UploadToDanbooru {
         const tabUtils = new TabUtils(tab, this.browser.tabs);
         const batch = await this.tabMessagingProtocol.isBatch(tab.id);
         const url = tabUtils.makeUrl(danbooruUrl, batch);
-        const current = settings.openIn === "current";
-        const background = settings.openIn === "background";
-        const nextToCurrent = this.isChrome;
+        const urlOpener = this.getUrlOpener(tab);
 
-        await tabUtils.openPage(url.href, current, background, nextToCurrent);
+        await urlOpener.open(url.href, settings.openIn);
     }
 }

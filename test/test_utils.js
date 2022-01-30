@@ -156,63 +156,6 @@ describe("class TabUtils", function() {
             should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fexample.net%2Fpost%2F123");
         });
     });
-
-    describe("openPage()", function() {
-        it("current", function() {
-            const update = (tabId, params) => ({id: tabId, url: params.url});
-            const tabUtils = new TabUtils(tab, {update});
-            const result = tabUtils.openPage(pageUrl, true);
-
-            should(result).deepEqual({id: tab.id, url: pageUrl});
-        });
-
-        it("new", function() {
-            const create = (params) => params;
-            const tabUtils = new TabUtils(tab, {create});
-            const result = tabUtils.openPage(pageUrl);
-
-            should(result).deepEqual({
-                active: true,
-                openerTabId: tab.id,
-                url: pageUrl,
-            });
-        });
-
-        it("newNextToCurrent", function() {
-            const create = (params) => params;
-            const tabUtils = new TabUtils(tab, {create});
-            const result = tabUtils.openPage(pageUrl, false, false, true);
-
-            should(result).deepEqual({
-                active: true,
-                index: 10,
-                openerTabId: tab.id,
-                url: pageUrl,
-            });
-        });
-
-        it("background", function() {
-            const create = (params) => params;
-            const tabUtils = new TabUtils(tab, {create});
-            const expected = {active: false, openerTabId: tab.id, url: pageUrl};
-            const result = tabUtils.openPage(pageUrl, false, true);
-
-            should(result).deepEqual(expected);
-        });
-
-        it("backgroundNextToCurrent", function() {
-            const create = (params) => params;
-            const tabUtils = new TabUtils(tab, {create});
-            const result = tabUtils.openPage(pageUrl, false, true, true);
-
-            should(result).deepEqual({
-                active: false,
-                index: 10,
-                openerTabId: tab.id,
-                url: pageUrl,
-            });
-        });
-    });
 });
 
 describe("getAPI()", function() {

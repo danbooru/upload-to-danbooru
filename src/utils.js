@@ -38,24 +38,6 @@ export class TabUtils {
     makeUrl(prefix, batch) {
         return (batch ? makeBatchUrl : makePostUrl)(prefix, this.tab.url);
     }
-
-    openPage(url, current, background, nextToCurrent) {
-        if (current) {
-            return this.api.update(this.tab.id, {url});
-        }
-
-        const createProperties = {
-            active: !background,
-            openerTabId: this.tab.id,
-            url: url,
-        };
-
-        if (nextToCurrent) {
-            createProperties["index"] = this.tab.index + 1;
-        }
-
-        return this.api.create(createProperties);
-    }
 }
 
 export function makeBatchUrl(prefix, url) {
