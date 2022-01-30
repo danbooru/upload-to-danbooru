@@ -217,19 +217,30 @@ describe("class TabUtils", function() {
 
 describe("getAPI()", function() {
     const chrome = new Object();
-    const browser = new Object();
 
     it("chrome", function() {
-        const [api, isChrome] = getAPI({chrome});
+        const [api, isChrome, isAndroid] = getAPI({chrome});
 
         should(api).equal(chrome);
         should(isChrome).equal(true);
+        should(isAndroid).equal(false);
     });
 
     it("browser", function() {
-        const [api, isChrome] = getAPI({chrome, browser});
+        const browser = {contextMenus: {}};
+        const [api, isChrome, isAndroid] = getAPI({chrome, browser});
 
         should(api).equal(browser);
         should(isChrome).equal(false);
+        should(isAndroid).equal(false);
+    });
+
+    it("android", function() {
+        const browser = {};
+        const [api, isChrome, isAndroid] = getAPI({chrome, browser});
+
+        should(api).equal(browser);
+        should(isChrome).equal(false);
+        should(isAndroid).equal(true);
     });
 });

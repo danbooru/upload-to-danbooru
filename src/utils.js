@@ -112,8 +112,8 @@ export function getPageActionMatchRegExp(globs) {
 
 export function getAPI(ctx) {
     if (ctx.browser) {
-        return [ctx.browser, false];
+        return [ctx.browser, false, !ctx.browser.contextMenus];
     }
 
-    return [ctx.chrome, true];
+    return [ctx.chrome, true, false];
 }
