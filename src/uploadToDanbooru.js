@@ -39,17 +39,22 @@ export class UploadToDanbooru {
 
     init() {
         this.browser.runtime.onInstalled.addListener(this.onInstalled);
-        this.browser.contextMenus.onClicked.addListener(this.onContextMenuClicked);
         this.pageActionAPI.onClicked.addListener(this.onPageActionClicked);
+
+        if (this.browser.contextMenus) {
+            this.browser.contextMenus.onClicked.addListener(this.onContextMenuClicked);
+        }
     }
 
     onInstalled() {
-        this.browser.contextMenus.create({
-            id: this.menuID,
-            title: "Upload to &Danbooru",
-            contexts: ["image"],
-            targetUrlPatterns: ["https://*/*", "http://*/*"],
-        });
+        if (this.browser.contextMenus) {
+            this.browser.contextMenus.create({
+                id: this.menuID,
+                title: "Upload to &Danbooru",
+                contexts: ["image"],
+                targetUrlPatterns: ["https://*/*", "http://*/*"],
+            });
+        }
 
         if (this.isChrome) {
             this.browser.declarativeContent.onPageChanged.removeRules(undefined, this.addPageActionRules);
