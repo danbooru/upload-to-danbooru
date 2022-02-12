@@ -23,11 +23,11 @@ describe("URLOpener", function() {
 
     class TestURLOpener extends URLOpener {
         async current(url) {
-            return {url}
+            return {url};
         }
 
         async new(url, background) {
-            return {url, background}
+            return {url, background};
         }
     }
 
@@ -118,7 +118,6 @@ describe("GenericURLOpener", function() {
 });
 
 describe("BrowserURLOpener", function() {
-    const url = "https://example.com";
     const urlOpener = new BrowserURLOpener(undefined, {id: 123});
 
     it("subclass of GenericURLOpener", function() {
@@ -131,7 +130,6 @@ describe("BrowserURLOpener", function() {
 });
 
 describe("AndroidURLOpener", function() {
-    const url = "https://example.com";
     const urlOpener = new AndroidURLOpener();
 
     it("subclass of GenericURLOpener", function() {
@@ -144,7 +142,6 @@ describe("AndroidURLOpener", function() {
 });
 
 describe("ChromeURLOpener", function() {
-    const url = "https://example.com";
     const urlOpener = new ChromeURLOpener(undefined, {id: 123, index: 5});
 
     it("subclass of GenericURLOpener", function() {
