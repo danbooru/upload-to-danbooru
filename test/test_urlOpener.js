@@ -51,8 +51,10 @@ describe("URLOpener", function() {
         should(result).deepEqual({url});
     });
 
-    it("open() unknown", function() {
-        should(() => testUrlOpener.open(url, "test")).throw("invalid openIn: test");
+    it("open() default", async function() {
+        const result = await testUrlOpener.open(url);
+
+        should(result).deepEqual({url});
     });
 });
 

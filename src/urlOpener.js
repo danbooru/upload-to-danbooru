@@ -15,8 +15,7 @@ export class URLOpener {
         switch (openIn) {
         case "new": return this.new(url, false);
         case "background": return this.new(url, true);
-        case "current": return this.current(url);
-        default: throw new Error(`invalid openIn: ${openIn}`);
+        default: return this.current(url);
         }
     }
 }
