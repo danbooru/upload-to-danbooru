@@ -64,7 +64,6 @@ function makeChromeManifest() {
         },
         "permissions": [
             "declarativeContent",
-            "scripting",
             "activeTab",
             "contextMenus",
             "storage",
