@@ -86,6 +86,15 @@ describe("getReferer()", function() {
 
         should(ref).equal(srcUrl);
     });
+
+    it("link", function() {
+        const ref = getReferer(
+            {srcUrl, pageUrl: prefix, linkUrl: pageUrl},
+            /^http:\/\/example.net\/post\//,
+        );
+
+        should(ref).equal(pageUrl);
+    });
 });
 
 describe("getPageActionMatchRegExp()", function() {

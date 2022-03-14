@@ -29,6 +29,16 @@ export class UploadToDanbooru {
         return this.browser.pageAction;
     }
 
+    get pageActionRegexString() {
+        const key = this.isChrome ? "action" : "page_action";
+
+        return getPageActionMatchRegExp(this.manifest[key]["show_matches"]);
+    }
+
+    get pageActionRegex() {
+        return new RegExp(this.pageActionRegexString);
+    }
+
     getUrlOpener(tab) {
         return new this.urlOpenerClass(this.browser, tab);
     }
@@ -59,12 +69,11 @@ export class UploadToDanbooru {
     }
 
     addPageActionRules() {
-        const showMatches = this.manifest["action"]["show_matches"];
         const rule = {
             conditions: [
                 new this.browser.declarativeContent.PageStateMatcher({
                     pageUrl: {
-                        urlMatches: getPageActionMatchRegExp(showMatches),
+                        urlMatches: this.pageActionRegexString,
                     },
                 }),
             ],
@@ -83,7 +92,7 @@ export class UploadToDanbooru {
 
         const settings = await this.settings.get("url", "openIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const ref = getReferer(info);
+        const ref = getReferer(info, this.pageActionRegex);
         const src = fixUrl(info.srcUrl);
         const url = makeUploadUrl(danbooruUrl, src, ref);
         const urlOpener = this.getUrlOpener(tab);

@@ -41,9 +41,13 @@ export function makeUploadUrl(prefix, url, ref) {
     return uploadUrl;
 }
 
-export function getReferer(info) {
-    if (info.srcUrl === info.pageUrl && info.frameUrl) {
-        return info.frameUrl;
+export function getReferer(info, refererRegex) {
+    if (info.srcUrl === info.pageUrl) {
+        return info.frameUrl ? info.frameUrl : info.srcUrl;
+    }
+
+    if (info.linkUrl && refererRegex && refererRegex.test(info.linkUrl)) {
+        return info.linkUrl;
     }
 
     return info.pageUrl;
