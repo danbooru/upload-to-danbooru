@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
-    "version": "2.1.2",
+    "version": "3.0.0",
     "icons": {
         "16": "icons/icon16.png",
         "32": "icons/icon32.png",
@@ -21,11 +21,14 @@
         "default_title": "Upload to Danbooru",
         "show_matches": [
             "https://twitter.com/*/status/*",
+            "https://twitpic.com/*",
 
             "https://www.pixiv.net/artworks/*",
             "https://www.pixiv.net/en/artworks/*",
             "https://sketch.pixiv.net/items/*",
             "https://*.fanbox.cc/posts/*",
+
+            "https://fantia.jp/posts/*",
 
             "https://skeb.jp/@*/works/*",
 
@@ -46,6 +49,8 @@
 
             "https://m.weibo.cn/detail/*",
             "https://m.weibo.cn/status/*",
+            "https://www.weibo.com/*/*",
+            "https://tw.weibo.com/*/*",
 
             "https://www.hentai-foundry.com/pictures/user/*",
 
@@ -66,7 +71,6 @@
             "https://*.tumblr.com/post/*"
         ]
     },
-    "web_accessible_resources": ["batchDetectors.js"],
     "options_ui": {
         "page": "options.html",
         "browser_style": true

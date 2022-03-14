@@ -7,10 +7,6 @@ export function chromeifyManifest(manifest) {
         ...manifest["permissions"],
     ];
     manifest["action"] = manifest["page_action"];
-    manifest["web_accessible_resources"] = [{
-        "resources": manifest["web_accessible_resources"],
-        "matches": ["*://*/*"],
-    }];
     manifest["background"] = {
         "service_worker": "background.js",
         "type": "module",

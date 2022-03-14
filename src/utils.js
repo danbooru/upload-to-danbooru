@@ -29,29 +29,8 @@ export function fixUrl(url) {
     return url;
 }
 
-export class TabUtils {
-    constructor(tab, api) {
-        this.tab = tab;
-        this.api = api;
-    }
-
-    makeUrl(prefix, batch) {
-        return (batch ? makeBatchUrl : makePostUrl)(prefix, this.tab.url);
-    }
-}
-
-export function makeBatchUrl(prefix, url) {
-    const uploadUrl = new URL("uploads/batch", prefix);
-
-    uploadUrl.searchParams.set("url", url);
-
-    return uploadUrl;
-}
-
-export function makePostUrl(prefix, url, ref) {
+export function makeUploadUrl(prefix, url, ref) {
     const uploadUrl = new URL("uploads/new", prefix);
-
-
 
     uploadUrl.searchParams.set("url", url);
 
@@ -62,30 +41,12 @@ export function makePostUrl(prefix, url, ref) {
     return uploadUrl;
 }
 
-export const DataURLsNotSupportedError = new Error("Data URLs are not supported");
-
-export async function makeUrl(prefix, batch, info, getReferrer) {
-    if (batch) {
-        return makeBatchUrl(prefix, info.pageUrl);
+export function getReferer(info) {
+    if (info.srcUrl === info.pageUrl && info.frameUrl) {
+        return info.frameUrl;
     }
 
-    if (info.srcUrl.startsWith("data:")) {
-        throw DataURLsNotSupportedError;
-    }
-
-    let ref;
-
-    if (info.srcUrl === info.pageUrl) {
-        if (info.frameUrl) {
-            ref = info.frameUrl;
-        } else if (getReferrer) {
-            ref = await getReferrer();
-        }
-    } else {
-        ref = info.pageUrl;
-    }
-
-    return makePostUrl(prefix, fixUrl(info.srcUrl), ref);
+    return info.pageUrl;
 }
 
 export function getPageActionMatchRegExp(globs) {

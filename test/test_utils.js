@@ -1,12 +1,9 @@
 import should from "should/as-function.js";
 
 import {
-    DataURLsNotSupportedError,
-    TabUtils,
     fixUrl,
-    makeBatchUrl,
-    makePostUrl,
-    makeUrl,
+    makeUploadUrl,
+    getReferer,
     getPageActionMatchRegExp,
     getAPI,
 } from "upload-to-danbooru/utils.js";
@@ -15,7 +12,6 @@ const prefix = "http://example.com/";
 const pageUrl = "http://example.net/post/123";
 const frameUrl = "http://example.org/";
 const srcUrl = "http://cdn.example.net/xxx.jpg";
-const tab = {id: 123, index: 9, url: pageUrl};
 
 describe("fixUrl()", function() {
     const testCases = [
@@ -58,72 +54,37 @@ describe("fixUrl()", function() {
     }
 });
 
-describe("makeBatchUrl()", function() {
-    it("", function() {
-        const url = makeBatchUrl(prefix, pageUrl);
-
-        should(url.href).equal("http://example.com/uploads/batch?url=http%3A%2F%2Fexample.net%2Fpost%2F123");
-    });
-});
-
-describe("makePostUrl()", function() {
+describe("makeUploadUrl()", function() {
     it("no ref", function() {
-        const url = makePostUrl(prefix, srcUrl);
+        const url = makeUploadUrl(prefix, srcUrl);
 
         should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fcdn.example.net%2Fxxx.jpg");
     });
 
     it("with ref", function() {
-        const url = makePostUrl(prefix, srcUrl, pageUrl);
+        const url = makeUploadUrl(prefix, srcUrl, pageUrl);
 
         should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fcdn.example.net%2Fxxx.jpg&ref=http%3A%2F%2Fexample.net%2Fpost%2F123");
     });
 });
 
-describe("makeUrl()", function() {
-    it("batch", async function() {
-        const url = await makeUrl(prefix, true, {pageUrl});
+describe("getReferer()", function() {
+    it("page", function() {
+        const ref = getReferer({srcUrl, pageUrl});
 
-        should(url.href).equal("http://example.com/uploads/batch?url=http%3A%2F%2Fexample.net%2Fpost%2F123");
+        should(ref).equal(pageUrl);
     });
 
-    it("data url", async function() {
-        let url;
+    it("frame", function() {
+        const ref = getReferer({srcUrl, pageUrl: srcUrl, frameUrl});
 
-        try {
-            url = await makeUrl(prefix, false, {srcUrl: "data:,test"});
-        } catch(e) {
-            should(e).equal(DataURLsNotSupportedError);
-
-            return;
-        }
-
-        should(url).fail();
+        should(ref).equal(frameUrl);
     });
 
-    it("from page", async function() {
-        const url = await makeUrl(prefix, false, {pageUrl, srcUrl});
+    it("no frame", function() {
+        const ref = getReferer({srcUrl, pageUrl: srcUrl});
 
-        should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fcdn.example.net%2Fxxx.jpg&ref=http%3A%2F%2Fexample.net%2Fpost%2F123");
-    });
-
-    it("from image clean", async function() {
-        const url = await makeUrl(prefix, false, {pageUrl: srcUrl, srcUrl});
-
-        should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fcdn.example.net%2Fxxx.jpg");
-    });
-
-    it("from frame with image", async function() {
-        const url = await makeUrl(prefix, false, {pageUrl: srcUrl, srcUrl, frameUrl});
-
-        should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fcdn.example.net%2Fxxx.jpg&ref=http%3A%2F%2Fexample.org%2F");
-    });
-
-    it("from image with referrer", async function() {
-        const getReferrer = async () => pageUrl;
-        const url = await makeUrl(prefix, false, {pageUrl: srcUrl, srcUrl}, getReferrer);
-
-        should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fcdn.example.net%2Fxxx.jpg&ref=http%3A%2F%2Fexample.net%2Fpost%2F123");
+        should(ref).equal(srcUrl);
     });
 });
 
@@ -137,24 +98,6 @@ describe("getPageActionMatchRegExp()", function() {
         const result = getPageActionMatchRegExp(globs);
 
         should(result).equal("^https://twitter\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*");
-    });
-});
-
-describe("class TabUtils", function() {
-    describe("makeUrl()", function() {
-        it("batch", function() {
-            const tabUtils = new TabUtils(tab, {});
-            const url = tabUtils.makeUrl(prefix, true);
-
-            should(url.href).equal("http://example.com/uploads/batch?url=http%3A%2F%2Fexample.net%2Fpost%2F123");
-        });
-
-        it("new", function() {
-            const tabUtils = new TabUtils(tab, {});
-            const url = tabUtils.makeUrl(prefix);
-
-            should(url.href).equal("http://example.com/uploads/new?url=http%3A%2F%2Fexample.net%2Fpost%2F123");
-        });
     });
 });
 

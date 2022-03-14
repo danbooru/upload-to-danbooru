@@ -1,18 +1,14 @@
-import {TabUtils, makeUrl, getPageActionMatchRegExp} from "./utils.js";
+import {fixUrl, makeUploadUrl, getReferer, getPageActionMatchRegExp} from "./utils.js";
 
 export class UploadToDanbooru {
     constructor(
         browser,
         isChrome,
         settings,
-        tabMessagingProtocol,
-        batchDetectorInjector,
         urlOpenerClass,
     ) {
         this.browser = browser;
         this.settings = settings;
-        this.tabMessagingProtocol = tabMessagingProtocol;
-        this.batchDetectorInjector = batchDetectorInjector;
         this.urlOpenerClass = urlOpenerClass;
         this.manifest = browser.runtime.getManifest();
         this.isChrome = isChrome;
@@ -80,14 +76,6 @@ export class UploadToDanbooru {
         this.browser.declarativeContent.onPageChanged.addRules([rule]);
     }
 
-    makeGetReferrerCallback(tabId) {
-        return async () => {
-            await this.batchDetectorInjector.inject(tabId);
-
-            return await this.tabMessagingProtocol.getReferrer(tabId);
-        };
-    }
-
     async onContextMenuClicked(info, tab) {
         if (info.menuItemId !== this.menuID) {
             return;
@@ -95,26 +83,18 @@ export class UploadToDanbooru {
 
         const settings = await this.settings.get("url", "openIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const batch = (info.modifiers || []).some((key) => key === "Ctrl");
-        const url = await makeUrl(
-            danbooruUrl,
-            batch,
-            info,
-            this.makeGetReferrerCallback(tab.id),
-        );
+        const ref = getReferer(info);
+        const src = fixUrl(info.srcUrl);
+        const url = makeUploadUrl(danbooruUrl, src, ref);
         const urlOpener = this.getUrlOpener(tab);
 
         await urlOpener.open(url.href, settings.openIn);
     }
 
     async onPageActionClicked(tab) {
-        await this.batchDetectorInjector.inject(tab.id);
-
         const settings = await this.settings.get("url", "openIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const tabUtils = new TabUtils(tab, this.browser.tabs);
-        const batch = await this.tabMessagingProtocol.isBatch(tab.id);
-        const url = tabUtils.makeUrl(danbooruUrl, batch);
+        const url = makeUploadUrl(danbooruUrl, tab.url);
         const urlOpener = this.getUrlOpener(tab);
 
         await urlOpener.open(url.href, settings.openIn);

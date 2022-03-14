@@ -38,7 +38,6 @@ function makeManifest() {
             "contextMenus",
             "storage",
         ],
-        "web_accessible_resources": ["aaa.js", "bbb.js"],
         "browser_specific_settings": {
             "gecko": {
                 "id": "admin@localhost",
@@ -69,12 +68,6 @@ function makeChromeManifest() {
             "activeTab",
             "contextMenus",
             "storage",
-        ],
-        "web_accessible_resources": [
-            {
-                "resources": ["aaa.js", "bbb.js"],
-                "matches": ["*://*/*"],
-            },
         ],
         "minimum_chrome_version": "97",
         "action": {
