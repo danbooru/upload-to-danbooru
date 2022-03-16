@@ -1,5 +1,5 @@
 import {BrowserStorageSettings, FormManager} from "./settings.js";
-import { getAPI } from "./utils.js";
+import { DanbooruURL, getAPI } from "./utils.js";
 
 const [api, isChrome] = getAPI(globalThis);
 const form = document.forms.settings;
@@ -24,4 +24,5 @@ async function restoreOptions() {
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-document.forms.settings.addEventListener("submit", saveOptions);
+form.addEventListener("submit", saveOptions);
+form.url.placeholder = DanbooruURL;
