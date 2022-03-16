@@ -50,21 +50,30 @@ export class UploadToDanbooru {
         if (this.browser.contextMenus) {
             this.browser.contextMenus.onClicked.addListener(this.onContextMenuClicked);
         }
+
+        if (!this.isChrome) {
+            this.setUpContextMenus();
+        }
+    }
+
+    setUpContextMenus() {
+        if (!this.browser.contextMenus) {
+            return;
+        }
+
+        this.browser.contextMenus.create({
+            id: this.menuID,
+            title: "Upload to &Danbooru",
+            contexts: ["image"],
+            targetUrlPatterns: ["https://*/*", "http://*/*"],
+        });
     }
 
     onInstalled() {
-        if (this.browser.contextMenus) {
-            this.browser.contextMenus.create({
-                id: this.menuID,
-                title: "Upload to &Danbooru",
-                contexts: ["image"],
-                targetUrlPatterns: ["https://*/*", "http://*/*"],
-            });
-        }
-
         if (this.isChrome) {
             this.browser.declarativeContent.onPageChanged.removeRules(undefined, this.addPageActionRules);
             this.browser.action.disable();
+            this.setUpContextMenus();
         }
     }
 

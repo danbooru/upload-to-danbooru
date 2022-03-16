@@ -46,9 +46,13 @@ describe("UploadToDanbooru", function() {
 
 
     it("init()", function() {
-        let onInstalled, onContextMenuClicked, onPageActionClicked;
+        let onInstalled, onContextMenuClicked, onPageActionClicked, contextMenuEntry;
         const browser = {
+            isChrome: false,
             contextMenus: {
+                create(spec) {
+                    contextMenuEntry = spec;
+                },
                 onClicked: {
                     addListener(callback) {
                         onContextMenuClicked = callback;
@@ -80,16 +84,18 @@ describe("UploadToDanbooru", function() {
         should(onInstalled).equal(uploadToDanbooru.onInstalled);
         should(onContextMenuClicked).equal(uploadToDanbooru.onContextMenuClicked);
         should(onPageActionClicked).equal(uploadToDanbooru.onPageActionClicked);
+        should(contextMenuEntry).deepEqual({
+            id: "upload-to-danbooru",
+            title: "Upload to &Danbooru",
+            contexts: ["image"],
+            targetUrlPatterns: ["https://*/*", "http://*/*"],
+        });
+
     });
 
     it("onInstalled() browser", function() {
-        let contextMenuEntry;
         const browser = {
-            contextMenus: {
-                create(spec) {
-                    contextMenuEntry = spec;
-                }
-            },
+            isChrome: false,
             runtime: {
                 getManifest() {
                     return {};
@@ -99,13 +105,6 @@ describe("UploadToDanbooru", function() {
         const uploadToDanbooru = new UploadToDanbooru(browser);
 
         uploadToDanbooru.onInstalled();
-
-        should(contextMenuEntry).deepEqual({
-            id: "upload-to-danbooru",
-            title: "Upload to &Danbooru",
-            contexts: ["image"],
-            targetUrlPatterns: ["https://*/*", "http://*/*"],
-        });
     });
 
     it("onInstalled() chrome", function() {
