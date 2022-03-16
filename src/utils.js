@@ -1,3 +1,5 @@
+export const DanbooruURL = "https://danbooru.donmai.us/";
+
 export function regexFixup(matchURLRegex, ...args) {
     return {
         match(url) {

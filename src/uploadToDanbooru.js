@@ -1,4 +1,10 @@
-import {fixUrl, makeUploadUrl, getReferer, getPageActionMatchRegExp} from "./utils.js";
+import {
+    DanbooruURL,
+    fixUrl,
+    makeUploadUrl,
+    getReferer,
+    getPageActionMatchRegExp,
+} from "./utils.js";
 
 export class UploadToDanbooru {
     constructor(
@@ -13,7 +19,7 @@ export class UploadToDanbooru {
         this.manifest = browser.runtime.getManifest();
         this.isChrome = isChrome;
         this.menuID = "upload-to-danbooru";
-        this.defaultDanbooruURL = "https://danbooru.donmai.us/";
+        this.defaultDanbooruURL = DanbooruURL;
 
         this.onInstalled = this.onInstalled.bind(this);
         this.onContextMenuClicked = this.onContextMenuClicked.bind(this);
