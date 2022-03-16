@@ -105,22 +105,26 @@ export class UploadToDanbooru {
             return;
         }
 
-        const settings = await this.settings.get("url", "openIn");
+        const settings = await this.settings.get("url", "openIn", "contextMenuOpenIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
         const ref = getReferer(info, this.pageActionRegex);
         const src = fixUrl(info.srcUrl);
         const url = makeUploadUrl(danbooruUrl, src, ref);
         const urlOpener = this.getUrlOpener(tab);
+        // TODO: remove settings.openIn after next major version update (>=4)
+        const openIn = settings.contextMenuOpenIn || settings.openIn || "background";
 
-        await urlOpener.open(url.href, settings.openIn);
+        await urlOpener.open(url.href, openIn);
     }
 
     async onPageActionClicked(tab) {
-        const settings = await this.settings.get("url", "openIn");
+        const settings = await this.settings.get("url", "openIn", "pageActionOpenIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
         const url = makeUploadUrl(danbooruUrl, tab.url);
         const urlOpener = this.getUrlOpener(tab);
+        // TODO: remove settings.openIn after next major version update (>=4)
+        const openIn = settings.pageActionOpenIn || settings.openIn || "current";
 
-        await urlOpener.open(url.href, settings.openIn);
+        await urlOpener.open(url.href, openIn);
     }
 }

@@ -4,13 +4,13 @@ import { DanbooruURL, getAPI } from "./utils.js";
 const [api, isChrome] = getAPI(globalThis);
 const form = document.forms.settings;
 const settings = new BrowserStorageSettings(api);
-const defaults = {url: "", openIn: "new"};
+const defaults = {url: "", pageActionOpenIn: "current", contextMenuOpenIn: "background"};
 const formManager = new FormManager(form, settings, defaults);
 
 async function saveOptions(e) {
     e.preventDefault();
 
-    await formManager.save("url", "openIn");
+    await formManager.save("url", "pageActionOpenIn", "contextMenuOpenIn");
 
     if (isChrome) {
         window.close();
@@ -20,7 +20,7 @@ async function saveOptions(e) {
 }
 
 async function restoreOptions() {
-    await formManager.load("url", "openIn");
+    await formManager.load("url", "pageActionOpenIn", "contextMenuOpenIn");
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);

@@ -12,10 +12,16 @@
             <p>Leave field empty if unsure.</p>
         </fieldset>
         <fieldset>
-            <legend>Open upload page in:</legend>
-            <label><input type="radio" name="openIn" id="new" value="new" checked>New Tab</label><br/>
-            <label><input type="radio" name="openIn" id="background" value="background">New Background Tab</label><br/>
-            <label><input type="radio" name="openIn" id="current" value="current">Current Tab</label>
+            <legend>When using the page action, open upload page in:</legend>
+            <label><input type="radio" name="pageActionOpenIn" id="pageActionNew" value="new">New Tab</label><br/>
+            <label><input type="radio" name="pageActionOpenIn" id="pageActionBackground" value="background">New Background Tab</label><br/>
+            <label><input type="radio" name="pageActionOpenIn" id="pageActionCurrent" value="current" checked>Current Tab</label>
+        </fieldset>
+        <fieldset>
+            <legend>When using the context menu, open upload page in:</legend>
+            <label><input type="radio" name="contextMenuOpenIn" id="contextMenuNew" value="new">New Tab</label><br/>
+            <label><input type="radio" name="contextMenuOpenIn" id="contextMenuBackground" value="background" checked>New Background Tab</label><br/>
+            <label><input type="radio" name="contextMenuOpenIn" id="contextMenuCurrent" value="current">Current Tab</label>
         </fieldset>
         <button type="submit">Save</button>
     </form>
