@@ -59,7 +59,7 @@
             "https://www.artstation.com/artwork/*",
             "https://*.artstation.com/projects/*",
 
-            "https://foundation.app/@*/~/*",
+            "https://foundation.app/@*/*/*",
 
             "https://*.lofter.com/post/*",
 
