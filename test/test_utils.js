@@ -45,6 +45,16 @@ describe("fixUrl()", function() {
             url: "https://c.fantia.jp/uploads/post/file/709449/main_324b4503-c64b-428b-875c-eaa273861268.png",
             expected: "https://c.fantia.jp/uploads/post/file/709449/324b4503-c64b-428b-875c-eaa273861268.png",
         },
+        {
+            name: "pximg without signature",
+            url: "https://anifty.imgix.net/creation/0x961d09077b4a9f7a27f6b7ee78cb4c26f0e72c18/20d5ce5b5163a71258e1d0ee152a0347bf40c7da.png?w=1200",
+            expected: "https://anifty.imgix.net/creation/0x961d09077b4a9f7a27f6b7ee78cb4c26f0e72c18/20d5ce5b5163a71258e1d0ee152a0347bf40c7da.png",
+        },
+        {
+            name: "pximg with signature",
+            url: "https://skeb.imgix.net/uploads/origins/b1dd4098-687b-4a91-a345-bb34248e6d8e?bg=%23fff&auto=format&w=800&s=55a47927c4ab3f399ca4bfacd092f617",
+            expected: "https://skeb.imgix.net/uploads/origins/b1dd4098-687b-4a91-a345-bb34248e6d8e?bg=%23fff&auto=format&w=800&s=55a47927c4ab3f399ca4bfacd092f617",
+        },
     ];
 
     for (let t of testCases) {
