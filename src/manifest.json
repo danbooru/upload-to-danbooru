@@ -61,6 +61,9 @@
 
             "https://foundation.app/@*/*/*",
 
+            "https://anifty.jp/creations/*",
+            "https://anifty.jp/*/creations/*",
+
             "https://*.lofter.com/post/*",
 
             "https://www.plurk.com/p/*",
