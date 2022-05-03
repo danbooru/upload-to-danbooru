@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
-    "version": "3.1.1",
+    "version": "3.1.2",
     "icons": {
         "16": "icons/icon16.png",
         "32": "icons/icon32.png",
@@ -27,6 +27,8 @@
             "https://www.pixiv.net/en/artworks/*",
             "https://sketch.pixiv.net/items/*",
             "https://*.fanbox.cc/posts/*",
+            "https://booth.pm/*/items/*",
+            "https://*.booth.pm/items/*",
 
             "https://fantia.jp/posts/*",
 
@@ -44,6 +46,9 @@
             "https://sp.nijie.info/view.php?*id=*",
             "https://sp.nijie.info/view_popup.php?*id=*",
 
+            "https://www.tinami.com/view/*",
+            "https://www.tinami.com/view/tweet/card/*",
+
             "https://pawoo.net/@*/*",
             "https://pawoo.net/web/statuses/*",
 
@@ -55,6 +60,8 @@
             "https://www.hentai-foundry.com/pictures/user/*",
 
             "https://www.newgrounds.com/art/view/*",
+
+            "https://www.furaffinity.net/view/*",
 
             "https://www.artstation.com/artwork/*",
             "https://*.artstation.com/projects/*",
