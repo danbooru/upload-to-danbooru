@@ -24,7 +24,6 @@ export class UploadToDanbooru {
         this.onInstalled = this.onInstalled.bind(this);
         this.onContextMenuClicked = this.onContextMenuClicked.bind(this);
         this.onPageActionClicked = this.onPageActionClicked.bind(this);
-        this.addPageActionRules = this.addPageActionRules.bind(this);
     }
 
     get pageActionAPI() {
@@ -77,27 +76,8 @@ export class UploadToDanbooru {
 
     onInstalled() {
         if (this.isChrome) {
-            this.browser.declarativeContent.onPageChanged.removeRules(undefined, this.addPageActionRules);
-            this.browser.action.disable();
             this.setUpContextMenus();
         }
-    }
-
-    addPageActionRules() {
-        const rule = {
-            conditions: [
-                new this.browser.declarativeContent.PageStateMatcher({
-                    pageUrl: {
-                        urlMatches: this.pageActionRegexString,
-                    },
-                }),
-            ],
-            actions: [
-                new this.browser.declarativeContent.ShowAction(),
-            ],
-        };
-
-        this.browser.declarativeContent.onPageChanged.addRules([rule]);
     }
 
     async onContextMenuClicked(info, tab) {

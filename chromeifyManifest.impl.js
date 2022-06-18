@@ -1,10 +1,6 @@
 export function chromeifyManifest(manifest) {
     manifest["manifest_version"] = 3;
     manifest["minimum_chrome_version"] = "97";
-    manifest["permissions"] = [
-        "declarativeContent",
-        ...manifest["permissions"],
-    ];
     manifest["action"] = manifest["page_action"];
     manifest["background"] = {
         "service_worker": "background.js",

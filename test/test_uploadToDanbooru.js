@@ -108,24 +108,11 @@ describe("UploadToDanbooru", function() {
     });
 
     it("onInstalled() chrome", function() {
-        let ids, onPageChanged, contextMenuEntry;
-        let disabled = false;
+        let contextMenuEntry;
         const chrome = {
-            action: {
-                disable() {
-                    disabled = true;
-                }
-            },
             contextMenus: {
                 create(spec) {
                     contextMenuEntry = spec;
-                }
-            },
-            declarativeContent: {
-                onPageChanged: {
-                    removeRules(ids, callback) {
-                        onPageChanged = callback;
-                    }
                 }
             },
             runtime: {
@@ -144,53 +131,5 @@ describe("UploadToDanbooru", function() {
             contexts: ["image"],
             targetUrlPatterns: ["https://*/*", "http://*/*"],
         });
-        should(ids).equal(undefined);
-        should(onPageChanged).equal(uploadToDanbooru.addPageActionRules);
-        should(disabled).equal(true);
-    });
-
-    it("addPageActionRules()", function() {
-        let rules = [];
-        class PageStateMatcher {
-            constructor(rule) {
-                this.rule = rule;
-            }
-        }
-        class ShowAction {}
-        const chrome = {
-            runtime: {
-                getManifest() {
-                    return chromeManifest;
-                },
-            },
-            declarativeContent: {
-                PageStateMatcher,
-                ShowAction,
-                onPageChanged: {
-                    addRules(newRules) {
-                        rules.push(...newRules);
-                    },
-                },
-            },
-        };
-
-        const uploadToDanbooru = new UploadToDanbooru(chrome, true);
-
-        uploadToDanbooru.addPageActionRules();
-
-        should(rules).deepEqual([
-            {
-                conditions: [
-                    new PageStateMatcher({
-                        pageUrl: {
-                            urlMatches: "^https://twitter\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*",
-                        },
-                    }),
-                ],
-                actions: [
-                    new ShowAction(),
-                ],
-            },
-        ]);
     });
 });
