@@ -35,6 +35,10 @@ export function fixUrl(url) {
 export function makeUploadUrl(prefix, url, ref) {
     const uploadUrl = new URL("uploads/new", prefix);
 
+    if (!/^https?:\/\//.test(url)) {
+        return uploadUrl;
+    }
+
     uploadUrl.searchParams.set("url", url);
 
     if (ref) {

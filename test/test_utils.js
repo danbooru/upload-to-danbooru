@@ -65,6 +65,12 @@ describe("fixUrl()", function() {
 });
 
 describe("makeUploadUrl()", function() {
+    it("non http", function() {
+        const url = makeUploadUrl(prefix, "chrome://newtab");
+
+        should(url.href).equal("http://example.com/uploads/new");
+    });
+
     it("no ref", function() {
         const url = makeUploadUrl(prefix, srcUrl);
 
