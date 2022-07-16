@@ -48,7 +48,7 @@ export class UploadToDanbooru {
         return new this.urlOpenerClass(this.browser, tab);
     }
 
-    init() {
+    async init() {
         this.browser.runtime.onInstalled.addListener(this.onInstalled);
         this.pageActionAPI.onClicked.addListener(this.onPageActionClicked);
 

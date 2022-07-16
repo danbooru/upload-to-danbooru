@@ -45,7 +45,7 @@ describe("UploadToDanbooru", function() {
     });
 
 
-    it("init()", function() {
+    it("init()", async function() {
         let onInstalled, onContextMenuClicked, onPageActionClicked, contextMenuEntry;
         const browser = {
             isChrome: false,
@@ -79,7 +79,7 @@ describe("UploadToDanbooru", function() {
         };
         const uploadToDanbooru = new UploadToDanbooru(browser);
 
-        uploadToDanbooru.init();
+        await uploadToDanbooru.init();
 
         should(onInstalled).equal(uploadToDanbooru.onInstalled);
         should(onContextMenuClicked).equal(uploadToDanbooru.onContextMenuClicked);
