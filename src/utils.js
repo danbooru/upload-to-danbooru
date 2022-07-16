@@ -71,3 +71,11 @@ export function getAPI(ctx) {
 
     return [ctx.chrome, true, false];
 }
+
+export function asBool(value, default_) {
+    if (value) {
+        return /^(yes|true|on|t|y)$/i.test(value);
+    }
+
+    return default_ || false;
+}

@@ -1,6 +1,7 @@
 import should from "should/as-function.js";
 
 import {
+    asBool,
     fixUrl,
     makeUploadUrl,
     getReferer,
@@ -153,5 +154,34 @@ describe("getAPI()", function() {
         should(api).equal(browser);
         should(isChrome).equal(false);
         should(isAndroid).equal(true);
+    });
+});
+
+describe("asBool()", function() {
+    const fallback = new Object();
+    const values = [
+        [undefined, fallback],
+        ["", fallback],
+        ["yes", true],
+        ["True", true],
+        ["ON", true],
+        ["t", true],
+        ["y", true],
+        ["no", false],
+        ["off", false],
+    ];
+
+    for (let [value, expected] of values) {
+        it(`${value} -> ${expected}`, function() {
+            should(asBool(value, fallback)).equal(expected);
+        });
+    }
+
+    it("fallback false", function() {
+        should(asBool(undefined, false)).equal(false);
+    });
+
+    it("fallback true", function() {
+        should(asBool(undefined, true)).equal(true);
     });
 });
