@@ -6,16 +6,20 @@ import {
     getPageActionMatchRegExp,
 } from "./utils.js";
 
+import { NoopURLOpener } from "./urlOpener.js";
+
 export class UploadToDanbooru {
     constructor(
         browser,
         isChrome,
         settings,
+        contextMenuSetupper,
         urlOpenerClass,
     ) {
         this.browser = browser;
         this.settings = settings;
-        this.urlOpenerClass = urlOpenerClass;
+        this.contextMenuSetupper = contextMenuSetupper;
+        this.urlOpenerClass = urlOpenerClass || NoopURLOpener;
         this.manifest = browser.runtime.getManifest();
         this.isChrome = isChrome;
         this.menuID = "upload-to-danbooru";
@@ -57,26 +61,13 @@ export class UploadToDanbooru {
         }
 
         if (!this.isChrome) {
-            this.setUpContextMenus();
+            await this.contextMenuSetupper.setup();
         }
     }
 
-    setUpContextMenus() {
-        if (!this.browser.contextMenus) {
-            return;
-        }
-
-        this.browser.contextMenus.create({
-            id: this.menuID,
-            title: "Upload to &Danbooru",
-            contexts: ["image"],
-            targetUrlPatterns: ["https://*/*", "http://*/*"],
-        });
-    }
-
-    onInstalled() {
+    async onInstalled() {
         if (this.isChrome) {
-            this.setUpContextMenus();
+            await this.contextMenuSetupper.setup();
         }
     }
 
