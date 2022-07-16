@@ -62,3 +62,10 @@ export class ChromeURLOpener extends GenericURLOpener {
         return {index: this.tab.index + 1, openerTabId: this.tab.id};
     }
 }
+
+export class NoopURLOpener extends URLOpener {
+    // eslint-disable-next-line no-unused-vars
+    async current(url) {}
+    // eslint-disable-next-line no-unused-vars
+    async new(url, background) {}
+}

@@ -7,6 +7,7 @@ import {
     BrowserURLOpener,
     AndroidURLOpener,
     ChromeURLOpener,
+    NoopURLOpener,
 } from "upload-to-danbooru/urlOpener.js";
 
 describe("URLOpener", function() {
@@ -150,5 +151,22 @@ describe("ChromeURLOpener", function() {
 
     it("get newTabParams()", function() {
         should(urlOpener.newTabParams).deepEqual({openerTabId: 123, index: 6});
+    });
+});
+
+describe("NoopURLOpener", function() {
+    const url = "https://example.com";
+    const urlOpener = new NoopURLOpener();
+
+    it("current()", async function() {
+        await urlOpener.current(url);
+    });
+
+    it("new() active", async function() {
+        await urlOpener.new(url, false);
+    });
+
+    it("new() background", async function() {
+        await urlOpener.new(url, false);
     });
 });
