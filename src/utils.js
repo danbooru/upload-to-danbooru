@@ -1,63 +1,23 @@
+import { defaultUrlFixuper } from "./urlFixuper.js";
+import { UploadURLGeneratorImpl } from "./uploadUrlGenerator.js";
+import { RefererGetterImpl } from "./refererGetter.js";
+
 export const DanbooruURL = "https://danbooru.donmai.us/";
 
-export function regexFixup(matchURLRegex, ...args) {
-    return {
-        match(url) {
-            return matchURLRegex.test(url);
-        },
-        fix(url) {
-            for (let [match, replaceWith] of args) {
-                url = url.replace(match, replaceWith);
-            }
-            return url;
-        },
-    };
-}
-
-export const urlFixups = [
-    regexFixup(/\.hdslb\.com\//, [/@.*/, ""]),
-    regexFixup(/:\/\/media.discordapp.net\//, [/\?.*/, ""]),
-    regexFixup(/\.pinimg\.com\//, [/\/\d+x\//, "/originals/"]),
-    regexFixup(/(pixiv|booth)\.pximg\.net\//, [/\/c\/\d+x\d+.*?\//, "/"], [/_base_resized/, ""]),
-    regexFixup(/:\/\/c\.fantia.jp\//, [/(\d+)\/.*?_/, "$1/"]),
-    regexFixup(/.*\.imgix.net\//, [/\?(?!.*s=).*/, ""]),
-];
-
 export function fixUrl(url) {
-    for (let fixup of urlFixups) {
-        if (fixup.match(url)) {
-            url = fixup.fix(url);
-        }
-    }
-    return url;
+    return defaultUrlFixuper.fix(url);
 }
 
 export function makeUploadUrl(prefix, url, ref) {
-    const uploadUrl = new URL("uploads/new", prefix);
+    const g = new UploadURLGeneratorImpl(prefix);
 
-    if (!/^https?:\/\//.test(url)) {
-        return uploadUrl;
-    }
-
-    uploadUrl.searchParams.set("url", url);
-
-    if (ref) {
-        uploadUrl.searchParams.set("ref", ref);
-    }
-
-    return uploadUrl;
+    return g.generate(url, ref);
 }
 
 export function getReferer(info, refererRegex) {
-    if (info.srcUrl === info.pageUrl) {
-        return info.frameUrl ? info.frameUrl : info.srcUrl;
-    }
+    const r = new RefererGetterImpl(refererRegex);
 
-    if (info.linkUrl && refererRegex && refererRegex.test(info.linkUrl)) {
-        return info.linkUrl;
-    }
-
-    return info.pageUrl;
+    return r.fromOnClickData(info);
 }
 
 export function getPageActionMatchRegExp(globs) {
