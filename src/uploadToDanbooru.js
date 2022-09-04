@@ -5,21 +5,19 @@ import {
 
 import { NoopURLOpener } from "./urlOpener.js";
 
-import { RefererGetterImpl } from "./refererGetter.js";
-import { defaultUrlFixuper } from "./urlFixuper.js";
-import { UploadURLGeneratorImpl } from "./uploadURLGenerator.js";
-
 export class UploadToDanbooru {
     constructor(
         browser,
         isChrome,
         settings,
         contextMenuSetupper,
+        getUploadURLService,
         urlOpenerClass,
     ) {
         this.browser = browser;
         this.settings = settings;
         this.contextMenuSetupper = contextMenuSetupper;
+        this.getUploadURLService = getUploadURLService;
         this.urlOpenerClass = urlOpenerClass || NoopURLOpener;
         this.manifest = browser.runtime.getManifest();
         this.isChrome = isChrome;
@@ -79,13 +77,9 @@ export class UploadToDanbooru {
 
         const settings = await this.settings.get("url", "openIn", "contextMenuOpenIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const refererGetter = new RefererGetterImpl(this.pageActionRegex);
-        const uploadURLGenerator = new UploadURLGeneratorImpl(danbooruUrl);
+        const uploadURLService = this.getUploadURLService(danbooruUrl, this.pageActionRegex);
 
-        const ref = refererGetter.fromOnClickData(info);
-        const src = defaultUrlFixuper.fix(info.srcUrl);
-
-        const url = uploadURLGenerator.generate(src, ref);
+        const url = uploadURLService.fromOnClickData(info);
         const urlOpener = this.getUrlOpener(tab);
         // TODO: remove settings.openIn after next major version update (>=4)
         const openIn = settings.contextMenuOpenIn || settings.openIn || "background";
@@ -96,8 +90,9 @@ export class UploadToDanbooru {
     async onPageActionClicked(tab) {
         const settings = await this.settings.get("url", "openIn", "pageActionOpenIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const uploadURLGenerator = new UploadURLGeneratorImpl(danbooruUrl);
-        const url = uploadURLGenerator.generate(tab.url);
+        const uploadURLService = this.getUploadURLService(danbooruUrl, this.pageActionRegex);
+
+        const url = uploadURLService.fromTab(tab);
         const urlOpener = this.getUrlOpener(tab);
         // TODO: remove settings.openIn after next major version update (>=4)
         const openIn = settings.pageActionOpenIn || settings.openIn || "current";
