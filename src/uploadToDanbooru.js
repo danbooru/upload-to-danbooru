@@ -1,12 +1,13 @@
 import {
     DanbooruURL,
-    fixUrl,
-    makeUploadUrl,
-    getReferer,
     getPageActionMatchRegExp,
 } from "./utils.js";
 
 import { NoopURLOpener } from "./urlOpener.js";
+
+import { RefererGetterImpl } from "./refererGetter.js";
+import { defaultUrlFixuper } from "./urlFixuper.js";
+import { UploadURLGeneratorImpl } from "./uploadURLGenerator.js";
 
 export class UploadToDanbooru {
     constructor(
@@ -78,9 +79,13 @@ export class UploadToDanbooru {
 
         const settings = await this.settings.get("url", "openIn", "contextMenuOpenIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const ref = getReferer(info, this.pageActionRegex);
-        const src = fixUrl(info.srcUrl);
-        const url = makeUploadUrl(danbooruUrl, src, ref);
+        const refererGetter = new RefererGetterImpl(this.pageActionRegex);
+        const uploadURLGenerator = new UploadURLGeneratorImpl(danbooruUrl);
+
+        const ref = refererGetter.fromOnClickData(info);
+        const src = defaultUrlFixuper.fix(info.srcUrl);
+
+        const url = uploadURLGenerator.generate(src, ref);
         const urlOpener = this.getUrlOpener(tab);
         // TODO: remove settings.openIn after next major version update (>=4)
         const openIn = settings.contextMenuOpenIn || settings.openIn || "background";
@@ -91,7 +96,8 @@ export class UploadToDanbooru {
     async onPageActionClicked(tab) {
         const settings = await this.settings.get("url", "openIn", "pageActionOpenIn");
         const danbooruUrl = settings.url || this.defaultDanbooruURL;
-        const url = makeUploadUrl(danbooruUrl, tab.url);
+        const uploadURLGenerator = new UploadURLGeneratorImpl(danbooruUrl);
+        const url = uploadURLGenerator.generate(tab.url);
         const urlOpener = this.getUrlOpener(tab);
         // TODO: remove settings.openIn after next major version update (>=4)
         const openIn = settings.pageActionOpenIn || settings.openIn || "current";
