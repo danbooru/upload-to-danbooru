@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "icons": {
         "16": "icons/icon16.png",
         "32": "icons/icon32.png",
@@ -34,6 +34,9 @@
 
             "https://skeb.jp/@*/works/*",
 
+            "https://enty.jp/posts/*",
+            "https://enty.jp/*/posts/*",
+
             "https://seiga.nicovideo.jp/seiga/im*",
             "https://seiga.nicovideo.jp/watch/mg*",
 
@@ -49,8 +52,17 @@
             "https://www.tinami.com/view/*",
             "https://www.tinami.com/view/tweet/card/*",
 
+            "https://picdig.net/ema/projects/*",
+
+            "https://poipiku.com/*/*.html",
+
             "https://pawoo.net/@*/*",
             "https://pawoo.net/web/statuses/*",
+            "https://baraag.net/@*/*",
+            "https://baraag.net/web/statuses/*",
+
+            "https://www.bilibili.com/opus/*",
+            "https://www.bilibili.com/read/*",
 
             "https://m.weibo.cn/detail/*",
             "https://m.weibo.cn/status/*",
@@ -71,12 +83,29 @@
             "https://anifty.jp/creations/*",
             "https://anifty.jp/*/creations/*",
 
+            "https://arca.live/b/*/*",
+
             "https://*.lofter.com/post/*",
 
             "https://www.plurk.com/p/*",
 
+            "https://*.fandom.com/wiki/Gallery?*file=*",
+
             "https://yande.re/post/show/*",
             "https://konachan.com/post/show/*",
+
+            "https://boards.4channel.org/*/thread/*",
+            "https://boards.4channel.org/*/res/*",
+            "https://boards.4chan.org/*/thread/*",
+            "https://boards.4chan.org/*/res/*",
+
+            "https://gelbooru.com/index.php?*id=*",
+            "https://safebooru.org/index.php?*id=*",
+            "https://rule34.xxx/index.php?*id=*",
+
+            "https://www.instagram.com/p/*",
+            "https://www.instagram.com/reel/*",
+            "https://www.instagram.com/tv/*",
 
             "https://*.tumblr.com/post/*"
         ]
