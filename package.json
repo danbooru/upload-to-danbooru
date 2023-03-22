@@ -13,7 +13,7 @@
     "buildChrome": "CHROME=yes ./build.sh"
   },
   "exports": {
-    "./": "./src/"
+    "./*": "./src/*"
   },
   "devDependencies": {
     "c8": "^7.13.0",
