@@ -1,0 +1,16 @@
+name: Node.js CI
+on: [ push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - name: Install deps
+        run: npm ci
+      - name: Run eslint
+        run: npx eslint src test *.js
+      - name: Run tests
+        if: success() || failure()
+        run: npm test
