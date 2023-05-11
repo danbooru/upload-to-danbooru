@@ -63,11 +63,16 @@
 
             "https://www.bilibili.com/opus/*",
             "https://www.bilibili.com/read/*",
+            "https://t.bilibili.com/*",
 
             "https://m.weibo.cn/detail/*",
             "https://m.weibo.cn/status/*",
             "https://www.weibo.com/*/*",
             "https://tw.weibo.com/*/*",
+
+            "https://misskey.io/notes/*",
+            "https://misskey.art/notes/*",
+            "https://misskey.design/notes/*",
 
             "https://www.hentai-foundry.com/pictures/user/*",
 
