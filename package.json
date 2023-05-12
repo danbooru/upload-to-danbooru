@@ -1,6 +1,6 @@
 {
   "name": "upload-to-danbooru",
-  "version": "3.2.0",
+  "version": "3.3.1",
   "description": "Add a context menu option for images to upload to Danbooru.",
   "type": "module",
   "directories": {
@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "c8": "^7.13.0",
-    "eslint": "^8.35.0",
+    "eslint": "^8.40.0",
     "mocha": "^10.2.0",
     "should": "^13.2.3",
-    "web-ext": "^7.5.0"
+    "web-ext": "^7.6.2"
   },
   "repository": {
     "type": "git",
