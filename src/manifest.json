@@ -61,6 +61,8 @@
             "https://baraag.net/@*/*",
             "https://baraag.net/web/statuses/*",
 
+            "https://bsky.app/profile/*/post/*",
+
             "https://www.bilibili.com/opus/*",
             "https://www.bilibili.com/read/*",
             "https://t.bilibili.com/*",
