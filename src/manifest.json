@@ -27,6 +27,7 @@
             "https://www.pixiv.net/en/artworks/*",
             "https://sketch.pixiv.net/items/*",
             "https://*.fanbox.cc/posts/*",
+            "https://www.fanbox.cc/@*/posts/*",
             "https://booth.pm/*/items/*",
             "https://*.booth.pm/items/*",
 
@@ -69,6 +70,7 @@
 
             "https://m.weibo.cn/detail/*",
             "https://m.weibo.cn/status/*",
+            "https://weibo.com/*/*",
             "https://www.weibo.com/*/*",
             "https://tw.weibo.com/*/*",
 
@@ -82,6 +84,9 @@
 
             "https://www.furaffinity.net/view/*",
 
+            "https://inkbunny.net/s/*",
+            "https://inkbunny.net/submissionview.php?*id=*",
+
             "https://www.artstation.com/artwork/*",
             "https://*.artstation.com/projects/*",
 
@@ -89,6 +94,11 @@
 
             "https://anifty.jp/creations/*",
             "https://anifty.jp/*/creations/*",
+
+            "https://xfolio.jp/portfolio/*/works/*",
+
+            "https://ci-en.net/creator/*/article/*",
+            "https://ci-en.dlsite.com/creator/*/article/*",
 
             "https://arca.live/b/*/*",
 
