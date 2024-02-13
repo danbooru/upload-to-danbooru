@@ -96,6 +96,7 @@
             "https://anifty.jp/*/creations/*",
 
             "https://xfolio.jp/portfolio/*/works/*",
+            "https://xfolio.jp/*/portfolio/*/works/*",
 
             "https://ci-en.net/creator/*/article/*",
             "https://ci-en.dlsite.com/creator/*/article/*",
