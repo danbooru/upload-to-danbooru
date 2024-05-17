@@ -21,7 +21,7 @@ describe("UploadToDanbooru", function() {
         "minimum_chrome_version": "97",
         "action": {
             "show_matches": [
-                "https://twitter.com/*/status/*",
+                "https://x.com/*/status/*",
                 "https://www.pixiv.net/artworks/*",
                 "https://*.tumblr.com/post/*",
             ],

@@ -9,13 +9,13 @@ import {
 describe("getPageActionMatchRegExp()", function() {
     it("", function() {
         const globs = [
-            "https://twitter.com/*/status/*",
+            "https://x.com/*/status/*",
             "https://www.pixiv.net/artworks/*",
             "https://*.tumblr.com/post/*",
         ];
         const result = getPageActionMatchRegExp(globs);
 
-        should(result).equal("^https://twitter\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*");
+        should(result).equal("^https://x\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*");
     });
 });
 

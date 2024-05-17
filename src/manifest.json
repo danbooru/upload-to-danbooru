@@ -20,7 +20,7 @@
         },
         "default_title": "Upload to Danbooru",
         "show_matches": [
-            "https://twitter.com/*/status/*",
+            "https://x.com/*/status/*",
             "https://twitpic.com/*",
 
             "https://www.pixiv.net/artworks/*",
