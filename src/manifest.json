@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
-    "version": "3.3.3",
+    "version": "3.3.4",
     "icons": {
         "16": "icons/icon16.png",
         "32": "icons/icon32.png",
@@ -32,6 +32,8 @@
             "https://*.booth.pm/items/*",
 
             "https://fantia.jp/posts/*",
+
+            "https://www.patreon.com/posts/*",
 
             "https://skeb.jp/@*/works/*",
 
@@ -92,6 +94,8 @@
 
             "https://foundation.app/@*/*/*",
 
+            "https://opensea.io/assets/*/*/*",
+
             "https://anifty.jp/creations/*",
             "https://anifty.jp/*/creations/*",
 
@@ -120,10 +124,30 @@
             "https://gelbooru.com/index.php?*id=*",
             "https://safebooru.org/index.php?*id=*",
             "https://rule34.xxx/index.php?*id=*",
+            "https://e621.net/posts/*",
 
             "https://www.instagram.com/p/*",
             "https://www.instagram.com/reel/*",
             "https://www.instagram.com/tv/*",
+
+            "https://vk.com/wall-*_*",
+            "https://vk.com/photo-*_*",
+            "https://vk.com/doc*_*",
+            "https://m.vk.com/wall-*_*",
+            "https://m.vk.com/photo-*_*",
+
+            "https://medibang.com/picture/*/",
+
+            "https://www.behance.net/gallery/*/*",
+
+            "https://dotpict.net/works/*",
+            "https://*.dotpict.net/works/*",
+
+            "https://www.foriio.com/works/*",
+
+            "https://galleria.emotionflow.com/*/*.html",
+
+            "https://www.xiaohongshu.com/explore/*",
 
             "https://*.tumblr.com/post/*"
         ]
