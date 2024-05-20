@@ -38,6 +38,13 @@ function makeManifest() {
             "contextMenus",
             "storage",
         ],
+        "commands": {
+            "_execute_page_action": {
+                "suggested_key": {
+                    "default": "Alt+Shift+D"
+                }
+            }
+        },
         "browser_specific_settings": {
             "gecko": {
                 "id": "admin@localhost",
@@ -67,6 +74,13 @@ function makeChromeManifest() {
             "contextMenus",
             "storage",
         ],
+        "commands": {
+            "_execute_action": {
+                "suggested_key": {
+                    "default": "Alt+Shift+D"
+                }
+            }
+        },
         "minimum_chrome_version": "97",
         "action": {
             "default_icon": {

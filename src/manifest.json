@@ -164,6 +164,13 @@
         "contextMenus",
         "storage"
     ],
+    "commands": {
+        "_execute_page_action": {
+            "suggested_key": {
+                "default": "Alt+Shift+D"
+            }
+        }
+    },
     "browser_specific_settings": {
         "gecko": {
             "id": "upload-to-danbooru@zipfiled.info",
