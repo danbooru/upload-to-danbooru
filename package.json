@@ -16,11 +16,11 @@
     "./*": "./src/*"
   },
   "devDependencies": {
-    "c8": "^9.1.0",
-    "eslint": "^8.56.0",
-    "mocha": "^10.3.0",
+    "c8": "^10.1.2",
+    "eslint": "^9.5.0",
+    "mocha": "^10.4.0",
     "should": "^13.2.3",
-    "web-ext": "^7.11.0"
+    "web-ext": "^8.2.0"
   },
   "repository": {
     "type": "git",
