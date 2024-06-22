@@ -3,12 +3,10 @@ import { asBool } from "./utils.js";
 export class NotImplementedError extends Error {}
 
 export class ContextMenuManager {
-    // eslint-disable-next-line no-unused-vars
     add() {
         throw new NotImplementedError();
     }
 
-    // eslint-disable-next-line no-unused-vars
     remove() {
         throw new NotImplementedError();
     }
@@ -44,7 +42,6 @@ export class BrowserContextMenuManager extends ContextMenuManager {
 }
 
 export class ContextMenuSetupper {
-    // eslint-disable-next-line no-unused-vars
     async setup() {
         throw new NotImplementedError();
     }
