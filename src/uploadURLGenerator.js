@@ -17,6 +17,10 @@ export class UploadURLGeneratorImpl extends UploadURLGenerator {
     generate(url, ref) {
         const uploadUrl = new URL("uploads/new", this.prefix);
 
+        if (url.startsWith(this.prefix) || ref?.startsWith(this.prefix)) {
+            return uploadUrl;
+        }
+
         if (!/^https?:\/\//.test(url)) {
             return uploadUrl;
         }

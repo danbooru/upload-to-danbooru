@@ -8,6 +8,23 @@ describe("UploadURLGeneratorImpl", function() {
     const srcUrl = "http://cdn.example.net/xxx.jpg";
     const uploadURLGenerator = new UploadURLGeneratorImpl(prefix);
 
+    describe("generate() same prefix", function() {
+        it("src", function() {
+            const url = uploadURLGenerator.generate("http://example.com/data/360x360/aa/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.jpg");
+
+            should(url.href).equal("http://example.com/uploads/new");
+        });
+
+        it("ref", function() {
+            const url = uploadURLGenerator.generate(
+                "http://cdn.example.com/data/360x360/aa/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.jpg",
+                "http://example.com/posts/123456789",
+            );
+
+            should(url.href).equal("http://example.com/uploads/new");
+        });
+    });
+
     it("generate() non http", function() {
         const url = uploadURLGenerator.generate("chrome://newtab");
 
