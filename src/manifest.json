@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Upload to Danbooru",
     "description": "Add a page action and a context menu option (for images) to upload to Danbooru.",
     "version": "3.3.5",
@@ -154,11 +154,11 @@
         ]
     },
     "options_ui": {
-        "page": "options.html",
-        "browser_style": true
+        "page": "options.html"
     },
     "background": {
-        "page": "background.html"
+        "scripts": ["background.js"],
+        "type": "module"
     },
     "permissions": [
         "activeTab",
@@ -175,7 +175,7 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "upload-to-danbooru@zipfiled.info",
-            "strict_min_version": "79.0"
+            "strict_min_version": "106.0"
         }
     }
 }

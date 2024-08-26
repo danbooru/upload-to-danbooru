@@ -6,7 +6,7 @@ import { chromeifyManifest, chromeifyManifestFile } from "../chromeifyManifest.i
 
 function makeManifest() {
     return {
-        "manifest_version": 2,
+        "manifest_version": 3,
         "name": "Test",
         "version": "0.0.1",
         "icons": {
@@ -25,10 +25,10 @@ function makeManifest() {
         },
         "options_ui": {
             "page": "options.html",
-            "browser_style": true,
         },
         "background": {
-            "page": "background.html",
+            "scripts": ["background.js"],
+            "type": "module",
         },
         "permissions": [
             "activeTab",
@@ -45,7 +45,7 @@ function makeManifest() {
         "browser_specific_settings": {
             "gecko": {
                 "id": "admin@localhost",
-                "strict_min_version": "59.0",
+                "strict_min_version": "106.0",
             },
         },
     };
