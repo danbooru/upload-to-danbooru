@@ -9,8 +9,8 @@
   "scripts": {
     "test": "mocha",
     "coverage": "c8 mocha",
-    "build": "./build.sh",
-    "buildChrome": "CHROME=yes ./build.sh"
+    "build": "./build.js",
+    "buildChrome": "./build.js --chrome"
   },
   "exports": {
     "./*": "./src/*"
