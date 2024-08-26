@@ -165,6 +165,12 @@
         "contextMenus",
         "storage"
     ],
+    "optional_permissions": [
+        "scripting"
+    ],
+    "optional_host_permissions": [
+        "*://www.instagram.com/*"
+    ],
     "commands": {
         "_execute_page_action": {
             "suggested_key": {

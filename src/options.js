@@ -2,7 +2,7 @@ import {
     BrowserContextMenuManager,
     ContextMenuSetupperImpl,
 } from "./contextMenuManager.js";
-import {BrowserStorageSettings, FormManager} from "./settings.js";
+import {BrowserStorageSettings, FormManager, ScriptsManager} from "./settings.js";
 import { DanbooruURL, getAPI } from "./utils.js";
 
 const [api, isChrome] = getAPI(globalThis);
@@ -39,3 +39,17 @@ async function restoreOptions() {
 document.addEventListener("DOMContentLoaded", restoreOptions);
 form.addEventListener("submit", saveOptions);
 form.url.placeholder = DanbooruURL;
+
+const scripts = {
+    instagram: {
+        matches: ["*://www.instagram.com/*"],
+        css: ["injections/instagram.css"],
+    },
+};
+const scriptsManager = new ScriptsManager(
+    document.forms.siteSpecific,
+    api,
+    scripts,
+);
+
+document.addEventListener("DOMContentLoaded", scriptsManager.onLoad);
