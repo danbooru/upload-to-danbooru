@@ -1,11 +1,8 @@
 import should from "should/as-function.js";
-import { PassThrough, Readable } from "stream";
-
-import {
-    chromeifyManifest,
-    parseArgs,
-    transformStream,
-} from "../chromeifyManifest.impl.js";
+import { join } from "path";
+import { tmpdir } from "os";
+import { mkdtemp, readFile, rm, writeFile } from "fs/promises";
+import { chromeifyManifest, chromeifyManifestFile } from "../chromeifyManifest.impl.js";
 
 function makeManifest() {
     return {
@@ -104,40 +101,26 @@ describe("chromeifyManifest()", function() {
     });
 });
 
-describe("parseArgs()", function() {
-    it("0", function() {
-        should(parseArgs([])).deepEqual(["-", "-"]);
+describe("chromeifyManifestFile()", function() {
+    let tmp;
+
+    before(async function () {
+        tmp = await mkdtemp(join(tmpdir(), "test-chromeifyManifestFile-"));
     });
 
-    it("1", function() {
-        should(parseArgs(["test"])).deepEqual(["test", "-"]);
+    after(async function () {
+        await rm(tmp, {"recursive": true, "force": true});
     });
 
-    it("2", function() {
-        should(parseArgs(["test", "tset"])).deepEqual(["test", "tset"]);
-    });
+    it("", async function() {
+        const manifest = makeManifest();
+        const path = join(tmp, "manifest.json");
 
-    it("n", function() {
-        should(parseArgs(["test", "tset", "?"])).deepEqual(["test", "tset"]);
-    });
-});
+        await writeFile(path, JSON.stringify(manifest), {"encoding": "utf8"});
+        await chromeifyManifestFile(path, manifest);
 
-describe("transformStream()", function() {
-    it("", function(done) {
-        const chunks = [];
-        const instream = Readable.from([JSON.stringify(makeManifest())]);
-        const outstream = new PassThrough();
-        const expected = JSON.stringify(makeChromeManifest(), null, 4) + "\n";
+        const result = JSON.parse(await readFile(path, {"encoding": "utf8"}));
 
-        outstream.on("data", (chunk) => {
-            chunks.push(chunk);
-        });
-
-        outstream.on("finish", () => {
-            should(chunks.join("")).equals(expected);
-            done();
-        });
-
-        transformStream(instream, outstream);
+        should(result).deepEqual(makeChromeManifest());
     });
 });
