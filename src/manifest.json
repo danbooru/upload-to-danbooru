@@ -131,6 +131,11 @@
             "https://www.instagram.com/reel/*",
             "https://www.instagram.com/tv/*",
 
+            "https://*.reddit.com/r/*/comments/*",
+            "https://www.reddit.com/gallery/*",
+            "https://www.reddit.com/media?url=*",
+            "https://www.redditmedia.com/mediaembed/*",
+
             "https://vk.com/wall-*_*",
             "https://vk.com/photo-*_*",
             "https://vk.com/doc*_*",
