@@ -17,6 +17,9 @@ export class BrowserContextMenuManager extends ContextMenuManager {
         super();
         this.browser = browser;
         this.menuID = menuID || "upload-to-danbooru";
+        this.enabled = true;
+        this.onShown = this.onShown.bind(this);
+        this.onHidden = this.onHidden.bind(this);
     }
 
     add() {
@@ -30,6 +33,34 @@ export class BrowserContextMenuManager extends ContextMenuManager {
             contexts: ["image"],
             targetUrlPatterns: ["https://*/*", "http://*/*"],
         });
+        this.browser.contextMenus.onShown.addListener(this.onShown);
+        this.browser.contextMenus.onHidden.addListener(this.onHidden);
+    }
+
+    onHidden() {
+        console.log("onHidden");
+        return this.browser.contextMenus.update(this.menuID, {enabled: true});
+    }
+
+    async onShown(info, tab) {
+        console.log("onShown", info, tab);
+        console.log("srcUrl", info.srcUrl);
+        console.log("pageUrl", info.pageUrl);
+        if (!info.menuIDs.contains(this.menuID)) {
+            return;
+        }
+        console.log("!info.menuIDs.contains(this.menuID)", !info.menuIDs.contains(this.menuID));
+
+        const isDanbooru = info.srcUrl.startsWith("https://danbooru.donmai.us/");
+
+        console.log("isDanbooru", isDanbooru);
+
+        if (!isDanbooru) {
+            return;
+        }
+
+        await this.browser.contextMenus.update(this.menuID, {enabled: false});
+        await this.browser.contextMenus.refresh();
     }
 
     remove() {
