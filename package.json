@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "c8": "^10.1.3",
-    "eslint": "^9.21.0",
-    "mocha": "^11.1.0",
+    "eslint": "^9.32.0",
+    "mocha": "^11.7.1",
     "should": "^13.2.3",
-    "web-ext": "^8.4.0"
+    "web-ext": "^8.9.0"
   },
   "repository": {
     "type": "git",
