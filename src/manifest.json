@@ -80,6 +80,11 @@
             "https://misskey.io/notes/*",
             "https://misskey.art/notes/*",
             "https://misskey.design/notes/*",
+            "https://mk.yopo.work/notes/*",
+            "https://nijimiss.moe/notes/*",
+            "https://oekakiskey.com/notes/*",
+            "https://sushi.ski/notes/*",
+            "https://voskey.icalo.net/notes/*",
 
             "https://www.hentai-foundry.com/pictures/user/*",
 
@@ -109,6 +114,7 @@
             "https://arca.live/b/*/*",
 
             "https://*.lofter.com/post/*",
+            "https://*.lofter.com/front/post/*",
 
             "https://www.plurk.com/p/*",
 
@@ -152,6 +158,19 @@
             "https://www.foriio.com/works/*",
 
             "https://galleria.emotionflow.com/*/*.html",
+
+            "https://grafolio.ogq.me/project/detail/*",
+
+            "https://huajia.163.com/main/works/*",
+            "https://huajia.163.com/main/*/details/*",
+
+            "https://itaku.ee/posts/*",
+            "https://itaku.ee/images/*",
+
+            "https://ko-fi.com/*?*viewimage=",
+            "https://ko-fi.com/Gallery/*",
+            "https://ko-fi.com/post/*",
+            "https://ko-fi.com/album/*",
 
             "https://www.xiaohongshu.com/explore/*",
 
