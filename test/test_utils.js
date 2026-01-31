@@ -20,9 +20,15 @@ describe("getPageActionMatchRegExp()", function() {
 });
 
 describe("getAPI()", function() {
-    const chrome = new Object();
-
     it("chrome", function() {
+        const chrome = {
+            runtime: {
+                getManifest() {
+                    return {"minimum_chrome_version": "97"};
+                }
+            }
+        };
+
         const [api, isChrome, isAndroid] = getAPI({chrome});
 
         should(api).equal(chrome);
@@ -31,6 +37,7 @@ describe("getAPI()", function() {
     });
 
     it("browser", function() {
+        const chrome = {};
         const browser = {contextMenus: {}};
         const [api, isChrome, isAndroid] = getAPI({chrome, browser});
 
@@ -40,6 +47,7 @@ describe("getAPI()", function() {
     });
 
     it("android", function() {
+        const chrome = {};
         const browser = {};
         const [api, isChrome, isAndroid] = getAPI({chrome, browser});
 

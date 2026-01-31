@@ -4,12 +4,22 @@ export function getPageActionMatchRegExp(globs) {
     return globs.map((glob) => "^" + glob.replace(/\./g, "\\.").replace(/\*/g, ".*")).join("|");
 }
 
+export function getManifest(ctx) {
+    return ctx?.chrome?.runtime?.getManifest?.() || ctx?.browser?.runtime?.getManifest?.() || {};
+}
+
+export function isChromeManifest(manifest) {
+    return !!manifest["minimum_chrome_version"];
+}
+
 export function getAPI(ctx) {
-    if (ctx.browser) {
-        return [ctx.browser, false, !ctx.browser.contextMenus];
+    const manifest = getManifest(ctx);
+
+    if (isChromeManifest(manifest)) {
+        return [ctx.chrome, true, false];
     }
 
-    return [ctx.chrome, true, false];
+    return [ctx.browser, false, !ctx.browser?.contextMenus];
 }
 
 export function asBool(value, default_) {
