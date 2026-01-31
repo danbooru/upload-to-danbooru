@@ -8,6 +8,15 @@ body {
     color: inherit;
 }
 
+.android .context-menu-options {
+    display: none;
+}
+
+#url {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         background-color: #1e1e2c;

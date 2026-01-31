@@ -5,7 +5,7 @@ import {
 import {BrowserStorageSettings, FormManager} from "./settings.js";
 import { DanbooruURL, getAPI } from "./utils.js";
 
-const [api, isChrome] = getAPI(globalThis);
+const [api, isChrome, isAndroid] = getAPI(globalThis);
 const form = document.forms.settings;
 const settings = new BrowserStorageSettings(api);
 const cm = new BrowserContextMenuManager(api);
@@ -39,3 +39,7 @@ async function restoreOptions() {
 document.addEventListener("DOMContentLoaded", restoreOptions);
 form.addEventListener("submit", saveOptions);
 form.url.placeholder = DanbooruURL;
+
+if (isAndroid) {
+    form.classList.add("android");
+}
