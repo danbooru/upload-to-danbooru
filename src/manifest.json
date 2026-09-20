@@ -173,6 +173,9 @@
             "https://ko-fi.com/album/*",
 
             "https://www.xiaohongshu.com/explore/*",
+            "https://www.xiaohongshu.com/user/profile/*",
+            "https://www.rednote.com/discovery/*",
+            "https://www.rednote.com/user/profile/*",
 
             "https://*.tumblr.com/post/*"
         ]
