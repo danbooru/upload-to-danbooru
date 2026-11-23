@@ -1,12 +1,17 @@
 name: Node.js CI
-on: [ push ]
+on:
+  push:
+  release:
+    types: published
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
       - name: Install deps
         run: npm ci
       - name: Run eslint
@@ -14,3 +19,32 @@ jobs:
       - name: Run tests
         if: success() || failure()
         run: npm test
+      - name: Build (Firefox)
+        run: npm run build
+      - name: Build (Chrome)
+        run: npm run buildChrome
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: web-ext-artifacts
+          path: web-ext-artifacts/*
+          if-no-files-found: error
+
+  release-upload:
+    if: github.event_name == 'release'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download workflow artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: web-ext-artifacts
+          path: web-ext-artifacts
+      - name: Upload as release assets
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" web-ext-artifacts/* --clobber
