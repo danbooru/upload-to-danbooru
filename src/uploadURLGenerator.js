@@ -1,3 +1,5 @@
+import { isHTTP } from "./utils.js";
+
 export class NotImplementedError extends Error {}
 
 export class UploadURLGenerator {
@@ -21,7 +23,7 @@ export class UploadURLGeneratorImpl extends UploadURLGenerator {
             return uploadUrl;
         }
 
-        if (!/^https?:\/\//.test(url)) {
+        if (!isHTTP(url)) {
             return uploadUrl;
         }
 

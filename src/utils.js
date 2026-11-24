@@ -1,7 +1,15 @@
 export const DanbooruURL = "https://danbooru.donmai.us/";
 
+export function isHTTP(s) {
+    return /^https?:\/\//.test(s);
+}
+
+function globToRegExp(s) {
+    return "^" + s.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*");
+}
+
 export function getPageActionMatchRegExp(globs) {
-    return globs.map((glob) => "^" + glob.replace(/\./g, "\\.").replace(/\*/g, ".*")).join("|");
+    return globs.filter(isHTTP).map(globToRegExp).join("|");
 }
 
 export function getManifest(ctx) {

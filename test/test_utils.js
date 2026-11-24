@@ -12,10 +12,18 @@ describe("getPageActionMatchRegExp()", function() {
             "https://x.com/*/status/*",
             "https://www.pixiv.net/artworks/*",
             "https://*.tumblr.com/post/*",
+            "https://nijie.info/view.php?*id=*",
+            "<all_urls>",
         ];
+        const expected = [
+            "^https://x\\.com/.*/status/.*",
+            "^https://www\\.pixiv\\.net/artworks/.*",
+            "^https://.*\\.tumblr\\.com/post/.*",
+            "^https://nijie\\.info/view\\.php\\?.*id=.*",
+        ].join("|");
         const result = getPageActionMatchRegExp(globs);
 
-        should(result).equal("^https://x\\.com/.*/status/.*|^https://www\\.pixiv\\.net/artworks/.*|^https://.*\\.tumblr\\.com/post/.*");
+        should(result).equal(expected);
     });
 });
 
