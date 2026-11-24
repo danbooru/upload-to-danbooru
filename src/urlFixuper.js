@@ -9,7 +9,7 @@ export class URLFixuper {
 
 export function regexFixup(matchURLRegex, ...args) {
     return {
-        match(url) {
+        test(url) {
             return matchURLRegex.test(url);
         },
         fix(url) {
@@ -39,7 +39,7 @@ export class URLFixuperImpl extends URLFixuper {
 
     fix(url) {
         for (let fixup of this.urlFixups) {
-            if (fixup.match(url)) {
+            if (fixup.test(url)) {
                 url = fixup.fix(url);
             }
         }
