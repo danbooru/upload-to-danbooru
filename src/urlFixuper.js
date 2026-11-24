@@ -23,11 +23,11 @@ export function regexFixup(matchURLRegex, ...args) {
 
 export const defaultUrlFixups = [
     regexFixup(/\.hdslb\.com\//, [/@.*/, ""]),
-    regexFixup(/:\/\/media.discordapp.net\//, [/\?.*/, ""]),
+    regexFixup(/:\/\/media\.discordapp\.net\//, [/\?.*/, ""]),
     regexFixup(/\.pinimg\.com\//, [/\/\d+x\//, "/originals/"]),
     regexFixup(/(pixiv|booth)\.pximg\.net\//, [/\/c\/\d+x\d+.*?\//, "/"], [/_base_resized/, ""]),
-    regexFixup(/:\/\/c\.fantia.jp\//, [/(\d+)\/.*?_/, "$1/"]),
-    regexFixup(/.*\.imgix.net\//, [/\?(?!.*s=).*/, ""]),
+    regexFixup(/:\/\/c\.fantia\.jp\//, [/(\d+)\/.*?_/, "$1/"]),
+    regexFixup(/\.imgix\.net\//, [/\?(?!.*s=).*/, ""]),
 ];
 
 export class URLFixuperImpl extends URLFixuper {

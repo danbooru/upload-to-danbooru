@@ -15,6 +15,11 @@ describe("URLFixuperImpl()", function() {
             expected: "https://media.discordapp.net/attachments/310432830138089472/722011243862556772/omegalbert_2.png",
         },
         {
+            name: "fake-discord",
+            url: "https://media-discordapp.net/attachments/000112233334478889/011222223455667778/your_mom.png?width=9000&height=9000",
+            expected: "https://media-discordapp.net/attachments/000112233334478889/011222223455667778/your_mom.png?width=9000&height=9000",
+        },
+        {
             name: "pinterest",
             url: "https://i.pinimg.com/736x/73/e8/2d/73e82d272de705bb8fad33e89c0543e5.jpg",
             expected: "https://i.pinimg.com/originals/73/e8/2d/73e82d272de705bb8fad33e89c0543e5.jpg",
